@@ -22,7 +22,11 @@ final class AddRitualViewController: UIViewController {
             systemItem: .cancel,
             primaryAction: UIAction { [weak self] _ in self?.dismiss(animated: true) }
         )
-        addButton.style = .prominent
+        if #available(iOS 26.0, *) {
+            addButton.style = .prominent
+        } else {
+            // Fallback on earlier versions
+        }
         addButton.isEnabled = false
         navigationItem.rightBarButtonItem = addButton
         setUpLayout()
