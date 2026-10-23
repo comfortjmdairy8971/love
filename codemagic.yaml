@@ -6,7 +6,7 @@ workflows:
     environment:
       vars:
         XCODE_PROJECT: "Love.xcodeproj"
-        XCODE_SCHEME: "Love"
+        XCODE_SCHEME: "J&M Joie Libre Moments"
       xcode: latest
     scripts:
       - name: Build IPA
