@@ -18,7 +18,7 @@
                BlueprintIdentifier = "000000000000000100000000"
                BuildableName = "MyApp.app"
                BlueprintName = "MyApp"
-               ReferencedContainer = "container:Love.xcodeproj">
+               ReferencedContainer = "container:JoieLibreMoments.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,14 +31,13 @@
       shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "000000000000000200000000"
                BuildableName = "MyAppUITests.xctest"
                BlueprintName = "MyAppUITests"
-               ReferencedContainer = "container:Love.xcodeproj">
+               ReferencedContainer = "container:JoieLibreMoments.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -60,7 +59,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "000000000000000100000000"
             BuildableName = "MyApp.app"
-            ReferencedContainer = "container:Love.xcodeproj">
+            BlueprintName = "MyApp"
+            ReferencedContainer = "container:JoieLibreMoments.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -77,7 +77,7 @@
             BlueprintIdentifier = "000000000000000100000000"
             BuildableName = "MyApp.app"
             BlueprintName = "MyApp"
-            ReferencedContainer = "container:Love.xcodeproj">
+            ReferencedContainer = "container:JoieLibreMoments.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
