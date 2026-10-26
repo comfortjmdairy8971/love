@@ -6,6 +6,9 @@ workflows:
     integrations:
       app_store_connect: Key
     environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.eduval.moments
       vars:
         XCODE_PROJECT: "JoieLibreMoments.xcodeproj"
         XCODE_SCHEME: "JoieLibreMoments"
