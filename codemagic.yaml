@@ -3,12 +3,17 @@ workflows:
     name: iOS Build
     max_build_duration: 120
     instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: 74GKC745H9
     environment:
       vars:
         XCODE_PROJECT: "Love.xcodeproj"
         XCODE_SCHEME: "J&M Joie Libre Moments"
       xcode: latest
     scripts:
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles --profile-type ad_hoc
       - name: Build IPA
         script: |
           xcode-project build-ipa \

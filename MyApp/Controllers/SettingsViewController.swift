@@ -43,6 +43,7 @@ final class SettingsViewController: UIViewController {
             Haptics.light()
         }, for: .valueChanged)
         control.accessibilityLabel = "Theme"
+        control.accessibilityIdentifier = AccessibilityID.Settings.themeControl
         let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, label, .spacer(), control])
         return ViewContainerCell(hosting: row, insets: NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
     }()
@@ -51,6 +52,8 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Settings"
         view.backgroundColor = .systemGroupedBackground
+        view.accessibilityIdentifier = AccessibilityID.Settings.screen
+        tableView.accessibilityIdentifier = AccessibilityID.Settings.table
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -155,21 +158,40 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case .preferences:
             return themeCell
         case .developer:
-            return actionCell(at: indexPath, title: "Replay Onboarding", symbol: "play.circle.fill", color: .systemPink)
+            return actionCell(
+                at: indexPath,
+                title: "Replay Onboarding",
+                symbol: "play.circle.fill",
+                color: .systemPink,
+                identifier: AccessibilityID.Settings.replayOnboarding
+            )
         case .data:
             switch ActionRow(rawValue: indexPath.row) {
             case .resetWeek:
-                return actionCell(at: indexPath, title: "Reset Current Week", symbol: "arrow.counterclockwise.circle.fill", color: .systemRed)
+                return actionCell(
+                    at: indexPath,
+                    title: "Reset Current Week",
+                    symbol: "arrow.counterclockwise.circle.fill",
+                    color: .systemRed,
+                    identifier: AccessibilityID.Settings.resetWeek
+                )
             case .eraseAll, nil:
-                return actionCell(at: indexPath, title: "Erase All Data", symbol: "trash.fill", color: .systemRed)
+                return actionCell(
+                    at: indexPath,
+                    title: "Erase All Data",
+                    symbol: "trash.fill",
+                    color: .systemRed,
+                    identifier: AccessibilityID.Settings.eraseAll
+                )
             }
         case nil:
             return UITableViewCell()
         }
     }
 
-    private func actionCell(at indexPath: IndexPath, title: String, symbol: String, color: UIColor) -> UITableViewCell {
+    private func actionCell(at indexPath: IndexPath, title: String, symbol: String, color: UIColor, identifier: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath)
+        cell.accessibilityIdentifier = identifier
         var content = cell.defaultContentConfiguration()
         content.text = title
         content.textProperties.color = color
@@ -214,6 +236,7 @@ final class GoalStepperRow: UIView {
         stepper.maximumValue = maximum
         stepper.stepValue = 15
         stepper.accessibilityLabel = "\(category.title) weekly goal"
+        stepper.accessibilityIdentifier = AccessibilityID.Settings.goalStepper(category)
         stepper.addAction(UIAction { [weak self] _ in
             guard let self else { return }
             let minutes = Int(self.stepper.value)

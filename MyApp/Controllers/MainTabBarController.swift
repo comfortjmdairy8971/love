@@ -6,18 +6,21 @@ final class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.tintColor = .systemPink
+        tabBar.accessibilityIdentifier = AccessibilityID.Tab.bar
         viewControllers = [
-            makeTab(DashboardViewController(), title: "Dashboard", symbol: "chart.pie.fill"),
-            makeTab(RitualsViewController(), title: "Rituals", symbol: "sparkles"),
-            makeTab(InsightsViewController(), title: "Insights", symbol: "chart.bar.fill"),
-            makeTab(SettingsViewController(), title: "Settings", symbol: "gearshape.fill"),
+            makeTab(DashboardViewController(), title: "Dashboard", symbol: "chart.pie.fill", identifier: AccessibilityID.Tab.dashboard),
+            makeTab(RitualsViewController(), title: "Rituals", symbol: "sparkles", identifier: AccessibilityID.Tab.rituals),
+            makeTab(InsightsViewController(), title: "Insights", symbol: "chart.bar.fill", identifier: AccessibilityID.Tab.insights),
+            makeTab(SettingsViewController(), title: "Settings", symbol: "gearshape.fill", identifier: AccessibilityID.Tab.settings),
         ]
     }
 
-    private func makeTab(_ root: UIViewController, title: String, symbol: String) -> UINavigationController {
+    private func makeTab(_ root: UIViewController, title: String, symbol: String, identifier: String) -> UINavigationController {
         let navigationController = UINavigationController(rootViewController: root)
         navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.tabBarItem = UITabBarItem(title: title, image: UIImage(systemName: symbol), selectedImage: nil)
+        let item = UITabBarItem(title: title, image: UIImage(systemName: symbol), selectedImage: nil)
+        item.accessibilityIdentifier = identifier
+        navigationController.tabBarItem = item
         return navigationController
     }
 }

@@ -18,6 +18,7 @@ final class RitualCell: UITableViewCell {
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 28, weight: .regular), forImageIn: .normal)
         checkButton.setContentHuggingPriority(.required, for: .horizontal)
+        checkButton.accessibilityIdentifier = AccessibilityID.Rituals.checkButton
         checkButton.addAction(UIAction { [weak self] _ in self?.onToggle?() }, for: .touchUpInside)
 
         let texts = UIStackView.make(.vertical, spacing: 4, alignment: .leading, [titleLabel, streakBadge])

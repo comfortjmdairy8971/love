@@ -25,6 +25,7 @@ final class DashboardViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Weekly State"
         view.backgroundColor = .systemGroupedBackground
+        view.accessibilityIdentifier = AccessibilityID.Dashboard.screen
         setUpLayout()
         setUpCallbacks()
         NotificationCenter.default.addObserver(self, selector: #selector(dataDidChange), name: .dataStoreDidChange, object: nil)
@@ -66,8 +67,12 @@ final class DashboardViewController: UIViewController {
 
         let categories = ActivityCategory.allCases
         for category in categories {
-            cards[category] = CategoryCardView(category: category)
+            let card = CategoryCardView(category: category)
+            card.accessibilityIdentifier = AccessibilityID.Dashboard.card(category)
+            card.quickAddButton.accessibilityIdentifier = AccessibilityID.Dashboard.quickAdd(category)
+            cards[category] = card
         }
+        rings.accessibilityIdentifier = AccessibilityID.Dashboard.rings
         let rows = stride(from: 0, to: categories.count, by: 2).map { index in
             UIStackView.make(.horizontal, spacing: 16, distribution: .fillEqually, categories[index..<min(index + 2, categories.count)].compactMap { cards[$0] })
         }

@@ -21,6 +21,7 @@ final class OnboardingViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGroupedBackground
+        view.accessibilityIdentifier = AccessibilityID.Onboarding.root
         dataSource = self
         delegate = self
 
@@ -34,6 +35,7 @@ final class OnboardingViewController: UIPageViewController {
         pageControl.currentPageIndicatorTintColor = .systemPink
         pageControl.pageIndicatorTintColor = UIColor.systemPink.withAlphaComponent(0.25)
         pageControl.backgroundStyle = .prominent
+        pageControl.accessibilityIdentifier = AccessibilityID.Onboarding.pageControl
         pageControl.addAction(UIAction { [weak self] _ in
             guard let self else { return }
             self.advance(to: self.pageControl.currentPage, updatingPageControl: false)

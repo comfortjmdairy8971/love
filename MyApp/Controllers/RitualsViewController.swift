@@ -41,7 +41,11 @@ final class RitualsViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Rituals & Ideas"
         view.backgroundColor = .systemGroupedBackground
+        view.accessibilityIdentifier = AccessibilityID.Rituals.screen
         addButton.accessibilityLabel = "Add New Ritual"
+        addButton.accessibilityIdentifier = AccessibilityID.Rituals.addButton
+        segmentedControl.accessibilityIdentifier = AccessibilityID.Rituals.modeControl
+        tableView.accessibilityIdentifier = AccessibilityID.Rituals.table
         navigationItem.rightBarButtonItem = addButton
 
         setUpLayout()

@@ -50,8 +50,12 @@ final class InsightsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Insights"
+        navigationItem.title = "Insights"
         view.backgroundColor = .systemGroupedBackground
+        view.accessibilityIdentifier = AccessibilityID.Insights.screen
+        rangeControl.accessibilityIdentifier = AccessibilityID.Insights.rangeControl
+        monthControl.accessibilityIdentifier = AccessibilityID.Insights.monthControl
+        shareButton.accessibilityIdentifier = AccessibilityID.Insights.shareRecapButton
         setUpLayout()
         NotificationCenter.default.addObserver(self, selector: #selector(dataDidChange), name: .dataStoreDidChange, object: nil)
         reloadData()

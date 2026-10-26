@@ -6,6 +6,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        if LaunchArgument.isUITesting {
+            UserDefaults.standard.set(false, forKey: DefaultsKey.hasCompletedOnboarding)
+        }
         DataBootstrap.run(context: DataStore.shared.context)
         return true
     }

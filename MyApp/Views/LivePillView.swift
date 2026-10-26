@@ -62,6 +62,8 @@ final class LivePillView: UIView {
         dotView.backgroundColor = .systemRed
         dotView.layer.cornerRadius = 5
 
+        capsule.accessibilityIdentifier = AccessibilityID.Dashboard.livePillStart
+        stopButton.accessibilityIdentifier = AccessibilityID.Dashboard.livePillStop
         timeLabel.accessibilityLabel = "Elapsed time"
         startLabel.adjustsFontSizeToFitWidth = true
         startLabel.minimumScaleFactor = 0.8

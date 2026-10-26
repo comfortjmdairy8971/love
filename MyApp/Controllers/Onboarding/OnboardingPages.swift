@@ -7,9 +7,13 @@ class OnboardingPageViewController: UIViewController {
 
     let contentView = UIView()
     private let buttonTitle: String
+    private let pageIdentifier: String
+    private let buttonIdentifier: String
 
-    init(buttonTitle: String) {
+    init(buttonTitle: String, pageIdentifier: String, buttonIdentifier: String) {
         self.buttonTitle = buttonTitle
+        self.pageIdentifier = pageIdentifier
+        self.buttonIdentifier = buttonIdentifier
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -18,8 +22,10 @@ class OnboardingPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
+        view.accessibilityIdentifier = pageIdentifier
 
         let button = UIButton(configuration: .capsule(title: buttonTitle, color: .systemPink))
+        button.accessibilityIdentifier = buttonIdentifier
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(UIAction { [weak self] _ in self?.onAction?() }, for: .touchUpInside)
 
@@ -71,7 +77,13 @@ class OnboardingPageViewController: UIViewController {
 final class OnboardingWelcomeViewController: OnboardingPageViewController {
     private let heartView = UIImageView(image: UIImage(systemName: "heart.circle.fill"))
 
-    init() { super.init(buttonTitle: "Get Started") }
+    init() {
+        super.init(
+            buttonTitle: "Get Started",
+            pageIdentifier: AccessibilityID.Onboarding.welcomePage,
+            buttonIdentifier: AccessibilityID.Onboarding.getStartedButton
+        )
+    }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -137,7 +149,13 @@ final class OnboardingWelcomeViewController: OnboardingPageViewController {
 final class OnboardingGoalsViewController: OnboardingPageViewController {
     private var minutesByCategory: [ActivityCategory: Int] = [:]
 
-    init() { super.init(buttonTitle: "Continue") }
+    init() {
+        super.init(
+            buttonTitle: "Continue",
+            pageIdentifier: AccessibilityID.Onboarding.goalsPage,
+            buttonIdentifier: AccessibilityID.Onboarding.continueButton
+        )
+    }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -181,6 +199,7 @@ private final class GoalSetupCardView: UIView {
         stepper.stepValue = 15
         stepper.value = Double(minutes)
         stepper.accessibilityLabel = "\(category.title) goal"
+        stepper.accessibilityIdentifier = AccessibilityID.Onboarding.goalStepper(category)
         stepper.addAction(UIAction { [weak self] _ in
             guard let self else { return }
             let minutes = Int(self.stepper.value)
@@ -210,15 +229,16 @@ private final class GoalSetupCardView: UIView {
 
 // MARK: - Step 3: Rituals
 struct RitualPreset {
+    let slug: String
     let title: String
     let icon: String
     let frequency: RitualFrequency
 
     static let all: [RitualPreset] = [
-        .init(title: "Friday Dinner Out", icon: "fork.knife", frequency: .weekly),
-        .init(title: "Sunday Morning Walk", icon: "figure.walk", frequency: .weekly),
-        .init(title: "Weekly Check-in", icon: "bubble.left.and.bubble.right.fill", frequency: .weekly),
-        .init(title: "Phone-Free Evening", icon: "iphone.slash", frequency: .weekly),
+        .init(slug: "fridayDinner", title: "Friday Dinner Out", icon: "fork.knife", frequency: .weekly),
+        .init(slug: "sundayWalk", title: "Sunday Morning Walk", icon: "figure.walk", frequency: .weekly),
+        .init(slug: "weeklyCheckIn", title: "Weekly Check-in", icon: "bubble.left.and.bubble.right.fill", frequency: .weekly),
+        .init(slug: "phoneFreeEvening", title: "Phone-Free Evening", icon: "iphone.slash", frequency: .weekly),
     ]
 }
 
@@ -231,7 +251,13 @@ final class OnboardingRitualsViewController: OnboardingPageViewController {
         chips.filter(\.isSelected).map(\.preset)
     }
 
-    init() { super.init(buttonTitle: "Start Tracking") }
+    init() {
+        super.init(
+            buttonTitle: "Start Tracking",
+            pageIdentifier: AccessibilityID.Onboarding.ritualsPage,
+            buttonIdentifier: AccessibilityID.Onboarding.startTrackingButton
+        )
+    }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -300,6 +326,7 @@ private final class RitualPresetChipView: UIControl {
 
         isAccessibilityElement = true
         accessibilityLabel = "\(preset.title), \(preset.frequency.title)"
+        accessibilityIdentifier = AccessibilityID.Onboarding.ritualPreset(preset.slug)
         applyStyle()
     }
 
