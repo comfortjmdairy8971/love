@@ -16,11 +16,6 @@
 			path = MyApp;
 			sourceTree = "<group>";
 		};
-		000000000000000000000210 /* MyAppUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MyAppUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,7 +31,6 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000010 /* MyApp */,
-				000000000000000000000210 /* MyAppUITests */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -261,7 +255,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CODE_SIGNING_REQUIRED = YES;
-				CODE_SIGN_ENTITLEMENTS = JoieLibreMoments.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MyApp/JoieLibreMoments.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "-";
@@ -310,7 +304,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CODE_SIGNING_REQUIRED = YES;
-				CODE_SIGN_ENTITLEMENTS = JoieLibreMoments.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MyApp/JoieLibreMoments.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "-";
