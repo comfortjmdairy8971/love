@@ -10,7 +10,7 @@ final class ConcentricRingsView: UIView {
 
     private(set) var rings: [ActivityCategory: CircularProgressView] = [:]
     private let centerView = CircularHitView()
-    private let heartView = UIImageView.symbol("heart.fill", style: .largeTitle, color: .systemPink)
+    private let heartView = UIImageView.symbol("heart.fill", style: .largeTitle, color: .brandAccent)
     private let percentLabel = UILabel.make(font: .rounded(ofSize: 22, weight: .bold), alignment: .center)
     private let titleLabel = UILabel.make(font: .systemFont(ofSize: 11, weight: .semibold), color: .secondaryLabel, alignment: .center)
     private lazy var centerStack = UIStackView.make(.vertical, spacing: 2, alignment: .center, [percentLabel, titleLabel])
@@ -56,7 +56,7 @@ final class ConcentricRingsView: UIView {
 
         heartView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular)
         heartView.alpha = 0.9
-        heartView.layer.shadowColor = UIColor.systemPink.cgColor
+        heartView.layer.shadowColor = UIColor.brandAccent.cgColor
         heartView.layer.shadowOpacity = 0.3
         heartView.layer.shadowRadius = 10
         heartView.layer.shadowOffset = .zero

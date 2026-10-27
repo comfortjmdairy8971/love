@@ -29,10 +29,10 @@ enum ActivityCategory: String, CaseIterable, Identifiable, Codable {
 
     var color: UIColor {
         switch self {
-        case .goingOut: .systemPink
-        case .deepTalks: .systemGreen
-        case .atHome: .systemBlue
-        case .newAdventures: .systemOrange
+        case .goingOut: .brandAccent
+        case .deepTalks: .brandAqua
+        case .atHome: .brandViolet
+        case .newAdventures: .brandOrange
         }
     }
 

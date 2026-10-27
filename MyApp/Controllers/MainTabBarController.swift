@@ -5,13 +5,13 @@ import SwiftUI
 final class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar.tintColor = .systemPink
+        tabBar.tintColor = .brandAccent
         tabBar.accessibilityIdentifier = AccessibilityID.Tab.bar
         viewControllers = [
-            makeTab(DashboardViewController(), title: "Dashboard", symbol: "chart.pie.fill", identifier: AccessibilityID.Tab.dashboard),
-            makeTab(RitualsViewController(), title: "Rituals", symbol: "sparkles", identifier: AccessibilityID.Tab.rituals),
-            makeTab(InsightsViewController(), title: "Insights", symbol: "chart.bar.fill", identifier: AccessibilityID.Tab.insights),
-            makeTab(SettingsViewController(), title: "Settings", symbol: "gearshape.fill", identifier: AccessibilityID.Tab.settings),
+            makeTab(DashboardViewController(), title: String(localized: "Dashboard"), symbol: "chart.pie.fill", identifier: AccessibilityID.Tab.dashboard),
+            makeTab(RitualsViewController(), title: String(localized: "Rituals"), symbol: "sparkles", identifier: AccessibilityID.Tab.rituals),
+            makeTab(InsightsViewController(), title: String(localized: "Insights"), symbol: "chart.bar.fill", identifier: AccessibilityID.Tab.insights),
+            makeTab(SettingsViewController(), title: String(localized: "Settings"), symbol: "gearshape.fill", identifier: AccessibilityID.Tab.settings),
         ]
     }
 

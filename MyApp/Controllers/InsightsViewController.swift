@@ -23,7 +23,7 @@ final class InsightsViewController: UIViewController {
     private let rangeControl = UISegmentedControl(items: TimeSpan.allCases.map(\.title))
 
     // Summary
-    private let thisWeekTile = StatTileView(title: "This week", color: .systemPink)
+    private let thisWeekTile = StatTileView(title: "This week", color: .brandAccent)
     private let averageTile = StatTileView(title: "Weekly average", color: .systemPurple)
     private let balanceMessageLabel = UILabel.make(font: .preferred(.subheadline, weight: .medium), lines: 0)
     private let leadingChip = ChipView()
@@ -46,7 +46,7 @@ final class InsightsViewController: UIViewController {
     // Recap
     private let monthControl = UISegmentedControl(items: ["This Month", "Last Month"])
     private let recapCard = MonthlyRecapCardView()
-    private let shareButton = UIButton(configuration: .capsule(title: "Share Recap", symbol: "square.and.arrow.up", color: .systemPink))
+    private let shareButton = UIButton(configuration: .capsule(title: "Share Recap", symbol: "square.and.arrow.up", color: .brandAccent))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,11 +130,11 @@ final class InsightsViewController: UIViewController {
 
         let bulb = IconTileView(
             symbol: "lightbulb.fill",
-            color: UIColor.systemYellow.withAlphaComponent(0.18),
+            color: UIColor.brandSun.withAlphaComponent(0.18),
             side: 28,
             cornerRadius: 14,
             pointSize: 13,
-            symbolColor: .systemYellow
+            symbolColor: .brandSun
         )
         let chips = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [leadingChip, laggingChip, .spacer()])
         let texts = UIStackView.make(.vertical, spacing: 8, [balanceMessageLabel, chips])
@@ -161,7 +161,7 @@ final class InsightsViewController: UIViewController {
 
         let cardWrapper = UIView()
         cardWrapper.translatesAutoresizingMaskIntoConstraints = false
-        cardWrapper.layer.shadowColor = UIColor.systemPink.cgColor
+        cardWrapper.layer.shadowColor = UIColor.brandAccent.cgColor
         cardWrapper.layer.shadowOpacity = 0.3
         cardWrapper.layer.shadowRadius = 20
         cardWrapper.layer.shadowOffset = CGSize(width: 0, height: 10)

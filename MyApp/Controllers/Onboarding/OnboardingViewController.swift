@@ -8,9 +8,15 @@ final class OnboardingViewController: UIPageViewController {
     private let pageControl = UIPageControl()
 
     private lazy var welcomePage = OnboardingWelcomeViewController()
+    private lazy var namesPage = OnboardingNamesViewController()
+    private lazy var photoPage = OnboardingPhotoViewController()
+    private lazy var anniversaryPage = OnboardingAnniversaryViewController()
+    private lazy var howWeMetPage = OnboardingHowWeMetViewController()
     private lazy var goalsPage = OnboardingGoalsViewController()
     private lazy var ritualsPage = OnboardingRitualsViewController()
-    private lazy var pages: [OnboardingPageViewController] = [welcomePage, goalsPage, ritualsPage]
+    private lazy var pages: [OnboardingPageViewController] = [
+        welcomePage, namesPage, photoPage, anniversaryPage, howWeMetPage, goalsPage, ritualsPage,
+    ]
 
     init() {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -25,15 +31,33 @@ final class OnboardingViewController: UIPageViewController {
         dataSource = self
         delegate = self
 
-        welcomePage.onAction = { [weak self] in self?.advance(to: 1) }
-        goalsPage.onAction = { [weak self] in self?.advance(to: 2) }
+        welcomePage.onAction = { [weak self] in self?.advance(past: self?.welcomePage) }
+        namesPage.onAction = { [weak self] in
+            self?.namesPage.save()
+            self?.advance(past: self?.namesPage)
+        }
+        photoPage.onAction = { [weak self] in
+            self?.photoPage.save()
+            self?.advance(past: self?.photoPage)
+        }
+        photoPage.onSecondaryAction = { [weak self] in self?.advance(past: self?.photoPage) }
+        anniversaryPage.onAction = { [weak self] in
+            self?.anniversaryPage.save()
+            self?.advance(past: self?.anniversaryPage)
+        }
+        howWeMetPage.onAction = { [weak self] in
+            self?.howWeMetPage.save()
+            self?.advance(past: self?.howWeMetPage)
+        }
+        howWeMetPage.onSecondaryAction = { [weak self] in self?.advance(past: self?.howWeMetPage) }
+        goalsPage.onAction = { [weak self] in self?.advance(past: self?.goalsPage) }
         ritualsPage.onAction = { [weak self] in self?.finish() }
         setViewControllers([welcomePage], direction: .forward, animated: false)
 
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.numberOfPages = pages.count
-        pageControl.currentPageIndicatorTintColor = .systemPink
-        pageControl.pageIndicatorTintColor = UIColor.systemPink.withAlphaComponent(0.25)
+        pageControl.currentPageIndicatorTintColor = .brandAccent
+        pageControl.pageIndicatorTintColor = UIColor.brandAccent.withAlphaComponent(0.25)
         pageControl.backgroundStyle = .prominent
         pageControl.accessibilityIdentifier = AccessibilityID.Onboarding.pageControl
         pageControl.addAction(UIAction { [weak self] _ in
@@ -51,8 +75,14 @@ final class OnboardingViewController: UIPageViewController {
         viewControllers?.first.flatMap { page in pages.firstIndex { $0 === page } } ?? 0
     }
 
+    private func advance(past page: OnboardingPageViewController?) {
+        guard let page, let index = pages.firstIndex(where: { $0 === page }) else { return }
+        advance(to: index + 1)
+    }
+
     private func advance(to index: Int, updatingPageControl: Bool = true) {
         guard pages.indices.contains(index), index != currentIndex else { return }
+        view.endEditing(true)
         Haptics.light()
         let direction: NavigationDirection = index > currentIndex ? .forward : .reverse
         if updatingPageControl { pageControl.currentPage = index }

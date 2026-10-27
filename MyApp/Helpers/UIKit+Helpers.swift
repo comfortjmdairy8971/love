@@ -177,6 +177,32 @@ class TapView: UIView {
     }
 }
 
+/// A filled, rounded text field with comfortable padding (onboarding forms).
+final class RoundedTextField: UITextField {
+    private let padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+    init(placeholder: String) {
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        self.placeholder = placeholder
+        font = .preferred(.body)
+        adjustsFontForContentSizeCategory = true
+        backgroundColor = .secondarySystemGroupedBackground
+        layer.cornerRadius = 14
+        layer.cornerCurve = .continuous
+        autocapitalizationType = .words
+        autocorrectionType = .no
+        clearButtonMode = .whileEditing
+        heightAnchor.constraint(greaterThanOrEqualToConstant: 52).isActive = true
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override func textRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: padding) }
+    override func editingRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: padding) }
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: padding) }
+}
+
 /// A view backed by a `CAGradientLayer`, so the gradient always matches its bounds.
 final class GradientView: UIView {
     override class var layerClass: AnyClass { CAGradientLayer.self }

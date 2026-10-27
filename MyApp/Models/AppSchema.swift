@@ -43,6 +43,15 @@ enum DataBootstrap {
             }
         }
 
+        let existingIdeas = (try? context.fetch(FetchDescriptor<Idea>())) ?? []
+        var seenIdeaIDs = Set<UUID>()
+        for idea in existingIdeas {
+            if !seenIdeaIDs.insert(idea.id).inserted {
+                idea.id = UUID()
+                seenIdeaIDs.insert(idea.id)
+            }
+        }
+
         let seededCategories = Set(existingGoals.map { ActivityCategory.resolve($0.categoryRaw)?.rawValue ?? $0.categoryRaw })
 
         for category in ActivityCategory.allCases {

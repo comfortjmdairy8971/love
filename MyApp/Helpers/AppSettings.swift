@@ -3,6 +3,12 @@ import UIKit
 enum DefaultsKey {
     static let hasCompletedOnboarding = "hasCompletedOnboarding"
     static let appTheme = "appTheme"
+    static let coupleYourName = "coupleYourName"
+    static let couplePartnerName = "couplePartnerName"
+    static let coupleStartDate = "coupleStartDate"
+    static let coupleHowWeMet = "coupleHowWeMet"
+    static let partnerSyncCoupleCode = "partnerSyncCoupleCode"
+    static let partnerSyncLastSyncedAt = "partnerSyncLastSyncedAt"
 }
 
 // MARK: - Theme
@@ -11,9 +17,9 @@ enum AppTheme: Int, CaseIterable {
 
     var title: String {
         switch self {
-        case .system: "System"
-        case .light: "Light"
-        case .dark: "Dark"
+        case .system: String(localized: "System")
+        case .light: String(localized: "Light")
+        case .dark: String(localized: "Dark")
         }
     }
 

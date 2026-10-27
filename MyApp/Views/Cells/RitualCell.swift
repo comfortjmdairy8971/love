@@ -6,7 +6,7 @@ final class RitualCell: UITableViewCell {
 
     var onToggle: (() -> Void)?
 
-    private let iconTile = IconTileView(symbol: Ritual.defaultIcon, color: .systemPink, side: 34, cornerRadius: 9, pointSize: 15)
+    private let iconTile = IconTileView(symbol: Ritual.defaultIcon, color: .brandAccent, side: 34, cornerRadius: 9, pointSize: 15)
     private let titleLabel = UILabel.make(font: .preferred(.headline), lines: 2)
     private let streakBadge = PaddingLabel.badge()
     private let checkButton = UIButton(type: .system)
@@ -39,10 +39,10 @@ final class RitualCell: UITableViewCell {
         let streak = ritual.activeStreak()
         let frequency = ritual.ritualFrequency
 
-        iconTile.configure(symbol: ritual.icon, color: .systemPink)
+        iconTile.configure(symbol: ritual.icon, color: .brandAccent)
         titleLabel.text = ritual.title
 
-        let badgeColor: UIColor = streak > 0 ? .systemOrange : .secondaryLabel
+        let badgeColor: UIColor = streak > 0 ? .brandOrange : .secondaryLabel
         streakBadge.text = streak > 0 ? "🔥 \(streak) \(frequency.unit) streak" : "\(frequency.title) · start a streak"
         streakBadge.textColor = badgeColor
         streakBadge.backgroundColor = badgeColor.withAlphaComponent(0.12)

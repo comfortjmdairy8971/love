@@ -38,7 +38,7 @@ final class MonthlyRecapCardView: UIView {
     }
 
     private func setUpBackground() {
-        let gradient = GradientView(colors: [.systemPink, .systemPurple, UIColor.systemOrange.withAlphaComponent(0.9)])
+        let gradient = GradientView(colors: [.brandAccent, .systemPurple, UIColor.systemOrange.withAlphaComponent(0.9)])
         addSubview(gradient)
         gradient.pinEdges(to: self)
 

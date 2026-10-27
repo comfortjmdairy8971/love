@@ -10,8 +10,8 @@ final class LivePillView: UIView {
 
     private let capsule = TapView()
 
-    private let playIcon = UIImageView.symbol("play.fill", style: .headline, color: .systemPink)
-    private let startLabel = UILabel.make("Start Time Together", font: .preferred(.headline), color: .systemPink)
+    private let playIcon = UIImageView.symbol("play.fill", style: .headline, color: .brandAccent)
+    private let startLabel = UILabel.make("Start Time Together", font: .preferred(.headline), color: .brandAccent)
     private lazy var idleStack = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [playIcon, startLabel])
 
     private let dotView = UIView()
@@ -22,7 +22,7 @@ final class LivePillView: UIView {
     let stopButton = UIButton(configuration: .capsule(
         title: "Stop",
         symbol: "stop.fill",
-        color: .systemRed,
+        color: .brandAccent,
         font: .preferred(.subheadline, weight: .bold),
         verticalPadding: 8
     ))
@@ -52,14 +52,14 @@ final class LivePillView: UIView {
         addSubview(capsule)
         capsule.clipsToBounds = true
         capsule.layer.cornerCurve = .continuous
-        capsule.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.3).cgColor
+        capsule.layer.borderColor = UIColor.brandAccent.withAlphaComponent(0.3).cgColor
         capsule.onTap = { [weak self] in
             guard let self, self.state == .idle else { return }
             self.onStart?()
         }
 
         dotView.translatesAutoresizingMaskIntoConstraints = false
-        dotView.backgroundColor = .systemRed
+        dotView.backgroundColor = .brandAccent
         dotView.layer.cornerRadius = 5
 
         capsule.accessibilityIdentifier = AccessibilityID.Dashboard.livePillStart
@@ -74,7 +74,7 @@ final class LivePillView: UIView {
         capsule.addSubview(idleStack)
         capsule.addSubview(activeStack)
 
-        layer.shadowColor = UIColor.systemRed.cgColor
+        layer.shadowColor = UIColor.brandAccent.cgColor
         layer.shadowRadius = 10
         layer.shadowOffset = CGSize(width: 0, height: 4)
         layer.shadowOpacity = 0
@@ -146,7 +146,7 @@ final class LivePillView: UIView {
             self.idleStack.alpha = isIdle ? 1 : 0
             self.activeStack.alpha = isIdle ? 0 : 1
             self.capsule.backgroundColor = isIdle
-                ? UIColor.systemPink.withAlphaComponent(0.12)
+                ? UIColor.brandAccent.withAlphaComponent(0.12)
                 : .secondarySystemGroupedBackground
             self.capsule.layer.borderWidth = isIdle ? 0 : 1
             self.layer.shadowOpacity = self.state == .running ? 0.15 : 0

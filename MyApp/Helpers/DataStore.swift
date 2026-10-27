@@ -21,9 +21,15 @@ final class DataStore {
     private init() {
         let inMemory = Self.isRunningForPreviews
         do {
+            // Partner sync talks to CloudKit directly (`PartnerSyncService`).
+            // Keep SwiftData local — `.automatic` turns on CloudKit when entitlements exist
+            // and then requires every attribute to be optional or have a default.
             container = try ModelContainer(
                 for: Schema(AppSchema.models),
-                configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory)
+                configurations: ModelConfiguration(
+                    isStoredInMemoryOnly: inMemory,
+                    cloudKitDatabase: .none
+                )
             )
         } catch {
             fatalError("Could not create the SwiftData container: \(error)")

@@ -5,7 +5,7 @@ final class HeroBannerView: UIView {
     private let overdueDays = 7
 
     private let inProgressCard = UIView()
-    private let headerIcon = UIImageView.symbol("sparkles", style: .headline, color: .systemPink)
+    private let headerIcon = UIImageView.symbol("sparkles", style: .headline, color: .brandAccent)
     private let goingOutPill = DaysSincePillView(category: .goingOut)
     private let adventuresPill = DaysSincePillView(category: .newAdventures)
     private let subtitleLabel = UILabel.make(font: .preferred(.caption1), color: .secondaryLabel, lines: 0)
@@ -39,12 +39,12 @@ final class HeroBannerView: UIView {
     }
 
     private func setUpCelebrationCard() {
-        celebrationCard.layer.shadowColor = UIColor.systemPink.cgColor
+        celebrationCard.layer.shadowColor = UIColor.brandAccent.cgColor
         celebrationCard.layer.shadowOpacity = 0.28
         celebrationCard.layer.shadowRadius = 12
         celebrationCard.layer.shadowOffset = CGSize(width: 0, height: 6)
 
-        let gradient = GradientView(colors: [.systemPink, .systemOrange, UIColor.systemPurple.withAlphaComponent(0.9)])
+        let gradient = GradientView(colors: [.brandAccent, .systemOrange, UIColor.systemPurple.withAlphaComponent(0.9)])
         gradient.layer.cornerRadius = 16
         gradient.layer.cornerCurve = .continuous
         gradient.clipsToBounds = true
@@ -88,7 +88,7 @@ final class HeroBannerView: UIView {
 
         let needsAttention = [goingOutDays, adventureDays].contains { ($0 ?? .max) >= overdueDays }
         headerIcon.image = UIImage(systemName: needsAttention ? "hourglass.bottomhalf.filled" : "sparkles")
-        headerIcon.tintColor = needsAttention ? .systemOrange : .systemPink
+        headerIcon.tintColor = needsAttention ? .systemOrange : .brandAccent
         subtitleLabel.text = Self.subtitle(goingOutDays: goingOutDays, adventureDays: adventureDays)
 
         guard achieved != allGoalsAchieved else { return }

@@ -95,7 +95,7 @@ struct WeekdayPeakChart: View {
                 y: .value("Hours", day.hours)
             )
             .cornerRadius(4)
-            .foregroundStyle(day.weekday == bestWeekday ? Color.pink : Color.pink.opacity(0.3))
+            .foregroundStyle(day.weekday == bestWeekday ? Color(uiColor: .brandAccent) : Color(uiColor: .brandAccent).opacity(0.3))
         }
         .chartYAxisLabel("hours")
     }

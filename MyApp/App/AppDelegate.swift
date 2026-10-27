@@ -8,8 +8,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         if LaunchArgument.isUITesting {
             UserDefaults.standard.set(false, forKey: DefaultsKey.hasCompletedOnboarding)
+            CoupleProfile.current = CoupleProfile(yourName: "", partnerName: "", startDate: nil, howWeMet: "")
+            CouplePhotoStore.remove()
+            PartnerSyncService.shared.unlink()
         }
         DataBootstrap.run(context: DataStore.shared.context)
+        if PartnerSyncService.isFeatureEnabled {
+            PartnerSyncService.shared.start()
+        }
         return true
     }
 

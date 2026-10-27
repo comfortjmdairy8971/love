@@ -4,16 +4,31 @@ import UIKit
 /// A page with arbitrary content above a full-width capsule action button.
 class OnboardingPageViewController: UIViewController {
     var onAction: (() -> Void)?
+    var onSecondaryAction: (() -> Void)?
 
     let contentView = UIView()
-    private let buttonTitle: String
+    let primaryButton: UIButton
+    private let secondaryButton: UIButton?
     private let pageIdentifier: String
-    private let buttonIdentifier: String
 
-    init(buttonTitle: String, pageIdentifier: String, buttonIdentifier: String) {
-        self.buttonTitle = buttonTitle
+    init(
+        buttonTitle: String,
+        pageIdentifier: String,
+        buttonIdentifier: String,
+        secondaryButtonTitle: String? = nil,
+        secondaryButtonIdentifier: String? = nil
+    ) {
         self.pageIdentifier = pageIdentifier
-        self.buttonIdentifier = buttonIdentifier
+        primaryButton = UIButton(configuration: .capsule(title: buttonTitle, color: .brandAccent))
+        primaryButton.accessibilityIdentifier = buttonIdentifier
+        secondaryButton = secondaryButtonTitle.map { title in
+            var config = UIButton.Configuration.plain()
+            config.title = title
+            config.baseForegroundColor = .secondaryLabel
+            let button = UIButton(configuration: config)
+            button.accessibilityIdentifier = secondaryButtonIdentifier
+            return button
+        }
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -24,51 +39,86 @@ class OnboardingPageViewController: UIViewController {
         view.backgroundColor = .clear
         view.accessibilityIdentifier = pageIdentifier
 
-        let button = UIButton(configuration: .capsule(title: buttonTitle, color: .systemPink))
-        button.accessibilityIdentifier = buttonIdentifier
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addAction(UIAction { [weak self] _ in self?.onAction?() }, for: .touchUpInside)
+        primaryButton.addAction(UIAction { [weak self] _ in self?.onAction?() }, for: .touchUpInside)
+        secondaryButton?.addAction(UIAction { [weak self] _ in self?.onSecondaryAction?() }, for: .touchUpInside)
+        let buttons = UIStackView.make(.vertical, spacing: 4, [primaryButton] + [secondaryButton].compactMap { $0 })
+
+        let dismissKeyboardTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        dismissKeyboardTap.cancelsTouchesInView = false
+        view.addGestureRecognizer(dismissKeyboardTap)
 
         contentView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentView)
-        view.addSubview(button)
+        view.addSubview(buttons)
         let guide = view.safeAreaLayoutGuide
+        let restingBottom = buttons.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: secondaryButton == nil ? -56 : -40)
+        restingBottom.priority = .defaultHigh
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: guide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 24),
             contentView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -24),
-            contentView.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -20),
+            contentView.bottomAnchor.constraint(equalTo: buttons.topAnchor, constant: -20),
 
-            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            button.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: -56),
+            buttons.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            buttons.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            restingBottom,
+            buttons.bottomAnchor.constraint(lessThanOrEqualTo: view.keyboardLayoutGuide.topAnchor, constant: -16),
         ])
     }
 
-    /// Embeds a vertically scrolling stack that starts with a title and subtitle.
-    func makeScrollingStack(title: String, subtitle: String) -> UIStackView {
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
+    /// Embeds a vertically scrolling stack that starts with a title (and optional subtitle).
+    /// Pass `verticallyCentered: true` for short pages so content doesn't sit under a huge empty gap.
+    func makeScrollingStack(title: String, subtitle: String? = nil, verticallyCentered: Bool = false) -> UIStackView {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = false
+        scrollView.keyboardDismissMode = .interactive
         contentView.addSubview(scrollView)
         scrollView.pinEdges(to: contentView)
 
-        let titleLabel = UILabel.make(title, font: .preferred(.title1, weight: .bold), lines: 0)
+        let titleLabel = UILabel.make(title, font: .preferred(.title1, weight: .bold), lines: 0, alignment: verticallyCentered ? .center : .natural)
         titleLabel.accessibilityTraits = .header
-        let subtitleLabel = UILabel.make(subtitle, font: .preferred(.subheadline), color: .secondaryLabel, lines: 0)
-        let header = UIStackView.make(.vertical, spacing: 8, [titleLabel, subtitleLabel])
+        var headerViews: [UIView] = [titleLabel]
+        if let subtitle, !subtitle.isEmpty {
+            let subtitleLabel = UILabel.make(
+                subtitle,
+                font: .preferred(.subheadline),
+                color: .secondaryLabel,
+                lines: 0,
+                alignment: verticallyCentered ? .center : .natural
+            )
+            headerViews.append(subtitleLabel)
+        }
+        let header = UIStackView.make(.vertical, spacing: 8, headerViews)
 
         let stack = UIStackView.make(.vertical, spacing: 20, [header])
         stack.isLayoutMarginsRelativeArrangement = true
-        stack.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 24, leading: 0, bottom: 8, trailing: 0)
+        stack.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: verticallyCentered ? 0 : 24,
+            leading: 0,
+            bottom: 8,
+            trailing: 0
+        )
         scrollView.addSubview(stack)
-        NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+        var constraints: [NSLayoutConstraint] = [
             stack.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             stack.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             stack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             stack.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-        ])
+        ]
+        if verticallyCentered {
+            let top = stack.topAnchor.constraint(greaterThanOrEqualTo: scrollView.contentLayoutGuide.topAnchor)
+            let center = stack.centerYAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerYAnchor)
+            center.priority = .defaultHigh
+            constraints += [top, center]
+        } else {
+            constraints.append(stack.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor))
+        }
+        NSLayoutConstraint.activate(constraints)
         return stack
     }
 }
@@ -79,7 +129,7 @@ final class OnboardingWelcomeViewController: OnboardingPageViewController {
 
     init() {
         super.init(
-            buttonTitle: "Get Started",
+            buttonTitle: String(localized: "Get Started"),
             pageIdentifier: AccessibilityID.Onboarding.welcomePage,
             buttonIdentifier: AccessibilityID.Onboarding.getStartedButton
         )
@@ -92,17 +142,18 @@ final class OnboardingWelcomeViewController: OnboardingPageViewController {
 
         heartView.translatesAutoresizingMaskIntoConstraints = false
         heartView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 110)
-        heartView.tintColor = .systemPink
-        heartView.layer.shadowColor = UIColor.systemPink.cgColor
-        heartView.layer.shadowOpacity = 0.35
-        heartView.layer.shadowRadius = 24
+        heartView.tintColor = .brandAccent
+        // Soft glow echoing the icon's warm ribbon (magenta → orange).
+        heartView.layer.shadowColor = UIColor.brandOrange.cgColor
+        heartView.layer.shadowOpacity = 0.45
+        heartView.layer.shadowRadius = 28
         heartView.layer.shadowOffset = CGSize(width: 0, height: 10)
         heartView.isAccessibilityElement = false
 
-        let titleLabel = UILabel.make("Nurture Your Relationship", font: .preferred(.largeTitle, weight: .bold), lines: 0, alignment: .center)
+        let titleLabel = UILabel.make(String(localized: "Your moments together"), font: .preferred(.largeTitle, weight: .bold), lines: 0, alignment: .center)
         titleLabel.accessibilityTraits = .header
         let subtitleLabel = UILabel.make(
-            "Set weekly goals for quality time, track meaningful connection, and build recurring rituals together.",
+            String(localized: "Set weekly goals for quality time, track meaningful connection, and build recurring rituals together."),
             font: .preferred(.body),
             color: .secondaryLabel,
             lines: 0,
@@ -145,13 +196,13 @@ final class OnboardingWelcomeViewController: OnboardingPageViewController {
     }
 }
 
-// MARK: - Step 2: Goals
+// MARK: - Step 5: Goals
 final class OnboardingGoalsViewController: OnboardingPageViewController {
     private var minutesByCategory: [ActivityCategory: Int] = [:]
 
     init() {
         super.init(
-            buttonTitle: "Continue",
+            buttonTitle: String(localized: "Continue"),
             pageIdentifier: AccessibilityID.Onboarding.goalsPage,
             buttonIdentifier: AccessibilityID.Onboarding.continueButton
         )
@@ -166,8 +217,8 @@ final class OnboardingGoalsViewController: OnboardingPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let stack = makeScrollingStack(
-            title: "Set Your Weekly Goals",
-            subtitle: "Choose how many minutes per week you want to aim for in each area."
+            title: String(localized: "Set Your Weekly Goals"),
+            subtitle: String(localized: "Choose how many minutes per week you want to aim for in each area.")
         )
         for category in ActivityCategory.allCases {
             let card = GoalSetupCardView(category: category, minutes: minutes(for: category))
@@ -227,7 +278,7 @@ private final class GoalSetupCardView: UIView {
     }
 }
 
-// MARK: - Step 3: Rituals
+// MARK: - Step 6: Rituals
 struct RitualPreset {
     let slug: String
     let title: String
@@ -243,7 +294,7 @@ struct RitualPreset {
 }
 
 final class OnboardingRitualsViewController: OnboardingPageViewController {
-    private let maxSelections = 2
+    private let maxSelections = RitualPreset.all.count
     private var chips: [RitualPresetChipView] = []
     private let captionLabel = UILabel.make(font: .preferred(.caption1), color: .secondaryLabel)
 
@@ -253,7 +304,7 @@ final class OnboardingRitualsViewController: OnboardingPageViewController {
 
     init() {
         super.init(
-            buttonTitle: "Start Tracking",
+            buttonTitle: String(localized: "Start Tracking"),
             pageIdentifier: AccessibilityID.Onboarding.ritualsPage,
             buttonIdentifier: AccessibilityID.Onboarding.startTrackingButton
         )
@@ -264,8 +315,8 @@ final class OnboardingRitualsViewController: OnboardingPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let stack = makeScrollingStack(
-            title: "Pick 1–2 Initial Rituals",
-            subtitle: "Recurring habits keep connection consistent week after week."
+            title: String(localized: "Pick your first rituals"),
+            subtitle: String(localized: "Recurring habits keep connection consistent week after week.")
         )
         chips = RitualPreset.all.map { preset in
             let chip = RitualPresetChipView(preset: preset)
@@ -292,7 +343,9 @@ final class OnboardingRitualsViewController: OnboardingPageViewController {
 
     private func updateCaption() {
         let count = selectedPresets.count
-        captionLabel.text = count == 0 ? "You can always add rituals later." : "\(count) of \(maxSelections) selected"
+        captionLabel.text = count == 0
+            ? String(localized: "You can always add rituals later.")
+            : String(localized: "\(count) of \(maxSelections) selected")
     }
 }
 
@@ -306,7 +359,7 @@ private final class RitualPresetChipView: UIControl {
 
     init(preset: RitualPreset) {
         self.preset = preset
-        iconTile = IconTileView(symbol: preset.icon, color: .systemPink, side: 34, cornerRadius: 9, pointSize: 14)
+        iconTile = IconTileView(symbol: preset.icon, color: .brandAccent, side: 34, cornerRadius: 9, pointSize: 14)
         titleLabel = UILabel.make(preset.title, font: .preferred(.headline))
         frequencyLabel = UILabel.make(preset.frequency.title, font: .preferred(.caption1))
         super.init(frame: .zero)
@@ -360,7 +413,7 @@ private final class RitualPresetChipView: UIControl {
     }
 
     private func applyStyle() {
-        let pink = UIColor.systemPink
+        let pink = UIColor.brandAccent
         backgroundColor = isSelected ? pink : .secondarySystemGroupedBackground
         layer.borderColor = pink.withAlphaComponent(isSelected ? 0 : 0.25).cgColor
         iconTile.configure(

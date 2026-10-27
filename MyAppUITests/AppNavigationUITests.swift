@@ -7,6 +7,15 @@ final class AppNavigationUITests: XCTestCase {
     private enum ID {
         static let welcomePage = "onboarding.welcome"
         static let getStartedButton = "onboarding.welcome.getStarted"
+        static let namesPage = "onboarding.names"
+        static let yourNameField = "onboarding.names.yourName"
+        static let partnerNameField = "onboarding.names.partnerName"
+        static let namesContinueButton = "onboarding.names.continue"
+        static let anniversaryPage = "onboarding.anniversary"
+        static let anniversaryContinueButton = "onboarding.anniversary.continue"
+        static let howWeMetPage = "onboarding.howWeMet"
+        static let howWeMetSkipButton = "onboarding.howWeMet.skip"
+        static let coupleHeader = "dashboard.coupleHeader"
         static let goalsPage = "onboarding.goals"
         static let continueButton = "onboarding.goals.continue"
         static let ritualsPage = "onboarding.rituals"
@@ -22,10 +31,10 @@ final class AppNavigationUITests: XCTestCase {
     }
 
     private let tabs = [
-        Tab(label: "Dashboard", identifier: "tab.dashboard", screen: "dashboard.screen", screenshot: "04_Tab_Dashboard"),
-        Tab(label: "Rituals", identifier: "tab.rituals", screen: "rituals.screen", screenshot: "05_Tab_Rituals"),
-        Tab(label: "Insights", identifier: "tab.insights", screen: "insights.screen", screenshot: "06_Tab_Insights"),
-        Tab(label: "Settings", identifier: "tab.settings", screen: "settings.screen", screenshot: "07_Tab_Settings"),
+        Tab(label: "Dashboard", identifier: "tab.dashboard", screen: "dashboard.screen", screenshot: "07_Tab_Dashboard"),
+        Tab(label: "Rituals", identifier: "tab.rituals", screen: "rituals.screen", screenshot: "08_Tab_Rituals"),
+        Tab(label: "Insights", identifier: "tab.insights", screen: "insights.screen", screenshot: "09_Tab_Insights"),
+        Tab(label: "Settings", identifier: "tab.settings", screen: "settings.screen", screenshot: "10_Tab_Settings"),
     ]
 
     private var app: XCUIApplication!
@@ -50,10 +59,35 @@ final class AppNavigationUITests: XCTestCase {
             takeScreenshot(named: "01_Onboarding_Welcome")
             getStarted.tap()
 
+            XCTAssertTrue(element(ID.namesPage).waitForExistence(timeout: 5), "Names page did not appear")
+            let yourName = app.textFields[ID.yourNameField]
+            waitUntilHittable(yourName)
+            yourName.tap()
+            yourName.typeText("Valeria")
+            let partnerName = app.textFields[ID.partnerNameField]
+            partnerName.tap()
+            partnerName.typeText("Edu")
+            let namesContinue = app.buttons[ID.namesContinueButton]
+            XCTAssertTrue(namesContinue.isEnabled, "Continue should be enabled once both names are filled")
+            takeScreenshot(named: "02_Onboarding_Names")
+            namesContinue.tap()
+
+            XCTAssertTrue(element(ID.anniversaryPage).waitForExistence(timeout: 5), "Anniversary page did not appear")
+            let anniversaryContinue = app.buttons[ID.anniversaryContinueButton]
+            waitUntilHittable(anniversaryContinue)
+            takeScreenshot(named: "03_Onboarding_Anniversary")
+            anniversaryContinue.tap()
+
+            XCTAssertTrue(element(ID.howWeMetPage).waitForExistence(timeout: 5), "How We Met page did not appear")
+            let skip = app.buttons[ID.howWeMetSkipButton]
+            waitUntilHittable(skip)
+            takeScreenshot(named: "04_Onboarding_HowWeMet")
+            skip.tap()
+
             XCTAssertTrue(element(ID.goalsPage).waitForExistence(timeout: 5), "Goals page did not appear")
             let continueButton = app.buttons[ID.continueButton]
             waitUntilHittable(continueButton)
-            takeScreenshot(named: "02_Onboarding_Goals")
+            takeScreenshot(named: "05_Onboarding_Goals")
             continueButton.tap()
 
             XCTAssertTrue(element(ID.ritualsPage).waitForExistence(timeout: 5), "Rituals page did not appear")
@@ -61,9 +95,12 @@ final class AppNavigationUITests: XCTestCase {
             waitUntilHittable(fridayDinner)
             fridayDinner.tap()
             XCTAssertTrue(fridayDinner.isSelected, "Friday Dinner preset should be selected after tapping it")
-            takeScreenshot(named: "03_Onboarding_Rituals")
+            takeScreenshot(named: "06_Onboarding_Rituals")
             app.buttons[ID.startTrackingButton].tap()
         }
+
+        XCTAssertTrue(element(ID.coupleHeader).waitForExistence(timeout: 5), "Couple header did not appear on the Dashboard")
+        XCTAssertTrue(element(ID.coupleHeader).label.contains("Valeria & Edu"), "Couple header should show both names")
 
         XCTContext.runActivity(named: "Main Tabs") { _ in
             let tabBar = app.tabBars.firstMatch

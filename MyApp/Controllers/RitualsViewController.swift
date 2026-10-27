@@ -200,10 +200,10 @@ extension RitualsViewController: UITableViewDataSource, UITableViewDelegate {
             content.text = suggestion.title
             content.secondaryText = suggestion.frequency.title
             content.image = UIImage(systemName: suggestion.icon)
-            content.imageProperties.tintColor = .systemPink
+            content.imageProperties.tintColor = .brandAccent
             cell.contentConfiguration = content
             let plus = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
-            plus.tintColor = .systemPink
+            plus.tintColor = .brandAccent
             cell.accessoryView = plus
             cell.accessibilityHint = "Adds this ritual"
             return cell

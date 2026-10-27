@@ -7,6 +7,12 @@ final class DashboardViewController: UIViewController {
 
     private let scrollView = UIScrollView()
     private let contentStack = UIStackView.make(.vertical, spacing: 24)
+    private let coupleHeader = CoupleHeaderView()
+    private let weeklyStateTitle = UILabel.make(
+        String(localized: "Weekly State"),
+        font: .preferred(.largeTitle, weight: .bold, design: .rounded),
+        lines: 0
+    )
     private let livePill = LivePillView()
     private let heroBanner = HeroBannerView()
     private let rings = ConcentricRingsView()
@@ -23,12 +29,15 @@ final class DashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Weekly State"
+        // Couple story sits above "Weekly State" in the scroll content.
+        navigationItem.title = String(localized: "Dashboard")
+        navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityID.Dashboard.screen
         setUpLayout()
         setUpCallbacks()
         NotificationCenter.default.addObserver(self, selector: #selector(dataDidChange), name: .dataStoreDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(coupleProfileDidChange), name: .coupleProfileDidChange, object: nil)
         reloadData(animated: false)
     }
 
@@ -45,7 +54,8 @@ final class DashboardViewController: UIViewController {
         scrollView.pinEdges(to: view)
 
         contentStack.isLayoutMarginsRelativeArrangement = true
-        contentStack.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
+        contentStack.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 24, trailing: 16)
+        weeklyStateTitle.accessibilityTraits = .header
         scrollView.addSubview(contentStack)
         NSLayoutConstraint.activate([
             contentStack.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
@@ -78,7 +88,9 @@ final class DashboardViewController: UIViewController {
         }
         let grid = UIStackView.make(.vertical, spacing: 16, rows)
 
-        [livePill, heroBanner, ringsWrapper, grid].forEach(contentStack.addArrangedSubview)
+        [coupleHeader, weeklyStateTitle, livePill, heroBanner, ringsWrapper, grid].forEach(contentStack.addArrangedSubview)
+        contentStack.setCustomSpacing(16, after: coupleHeader)
+        contentStack.setCustomSpacing(20, after: weeklyStateTitle)
     }
 
     private func setUpCallbacks() {
@@ -86,6 +98,10 @@ final class DashboardViewController: UIViewController {
         rings.onCenterTapped = { [weak self] in self?.clearSelection() }
         livePill.onStart = { [weak self] in self?.startTimer() }
         livePill.onStop = { [weak self] in self?.stopTimer() }
+        coupleHeader.onPhotoTap = { [weak self] in
+            guard let self else { return }
+            CouplePhotoPicker.present(from: self)
+        }
 
         for (category, card) in cards {
             card.onQuickAdd = { [weak self] in self?.quickAdd(to: category) }
@@ -98,7 +114,19 @@ final class DashboardViewController: UIViewController {
         reloadData(animated: view.window != nil)
     }
 
+    @objc private func coupleProfileDidChange() {
+        updateCoupleHeader()
+    }
+
+    private func updateCoupleHeader() {
+        let profile = CoupleProfile.current
+        coupleHeader.configure(with: profile)
+        // Pull "Weekly State" up when there's no couple card above it.
+        contentStack.setCustomSpacing(profile.hasDetails ? 16 : 0, after: coupleHeader)
+    }
+
     private func reloadData(animated: Bool) {
+        updateCoupleHeader()
         let logs = store.logs
         let goals = store.goals
         let weekMinutes = logs.minutesByCategory(in: Calendar.current.weekInterval(containing: .now))

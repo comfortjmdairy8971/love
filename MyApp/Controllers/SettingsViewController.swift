@@ -4,24 +4,81 @@ import SwiftUI
 
 // MARK: - Settings
 final class SettingsViewController: UIViewController {
-    private enum Section: Int, CaseIterable {
-        case goals, preferences, developer, data
+    private enum Section: CaseIterable {
+        case couple, sync, goals, preferences
+        #if DEBUG
+        case developer
+        #endif
+        case data
 
         var title: String {
             switch self {
-            case .goals: "Weekly Goals (Minutes)"
-            case .preferences: "Preferences"
-            case .developer: "Developer Tools"
-            case .data: "Data Management"
+            case .couple: String(localized: "Our Story")
+            case .sync: String(localized: "Partner Sync")
+            case .goals: String(localized: "Weekly Goals (Minutes)")
+            case .preferences: String(localized: "Preferences")
+            #if DEBUG
+            case .developer: String(localized: "Developer Tools")
+            #endif
+            case .data: String(localized: "Data Management")
             }
+        }
+
+        static var visible: [Section] {
+            allCases.filter { $0 != .sync || PartnerSyncService.isFeatureEnabled }
         }
     }
 
     private enum ActionRow: Int, CaseIterable { case resetWeek, eraseAll }
 
+    private enum SyncRow: Int, CaseIterable {
+        case status
+        case primary
+        case secondary
+        case tertiary
+
+        static func rows(isLinked: Bool) -> [SyncRow] {
+            isLinked ? [.status, .primary, .secondary, .tertiary] : [.status, .primary, .secondary]
+        }
+    }
+
     private let store = DataStore.shared
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private var goalRows: [ActivityCategory: GoalStepperRow] = [:]
+
+    private lazy var photoRow = CouplePhotoRow { [weak self] in
+        guard let self else { return }
+        CouplePhotoPicker.present(from: self)
+    }
+
+    private lazy var coupleCells: [ViewContainerCell] = {
+        let profile = CoupleProfile.current
+        let rowInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+        let yourName = CoupleTextRow(
+            symbol: "person.fill",
+            title: String(localized: "Your Name"),
+            placeholder: String(localized: "Add name"),
+            text: profile.yourName,
+            identifier: AccessibilityID.Settings.yourNameField
+        ) { text in CoupleProfile.update { $0.yourName = text } }
+        let partnerName = CoupleTextRow(
+            symbol: "heart.fill",
+            title: String(localized: "Partner's Name"),
+            placeholder: String(localized: "Add name"),
+            text: profile.partnerName,
+            identifier: AccessibilityID.Settings.partnerNameField
+        ) { text in CoupleProfile.update { $0.partnerName = text } }
+        let howWeMet = CoupleTextRow(
+            symbol: "sparkles",
+            title: String(localized: "How your story began"),
+            placeholder: String(localized: "A few words"),
+            text: profile.howWeMet,
+            identifier: AccessibilityID.Settings.howWeMetField
+        ) { text in CoupleProfile.update { $0.howWeMet = String(text.prefix(CoupleProfile.howWeMetCharacterLimit)) } }
+        return [photoRow, yourName, partnerName, makeStartDateRow(profile.startDate), howWeMet].map {
+            ViewContainerCell(hosting: $0, insets: rowInsets)
+        }
+    }()
 
     private lazy var goalCells: [ViewContainerCell] = ActivityCategory.allCases.map { category in
         let row = GoalStepperRow(category: category)
@@ -34,15 +91,15 @@ final class SettingsViewController: UIViewController {
     }
 
     private lazy var themeCell: ViewContainerCell = {
-        let icon = UIImageView.symbol("paintbrush.fill", color: .systemPink)
-        let label = UILabel.make("Theme", font: .preferred(.body))
+        let icon = UIImageView.symbol("paintbrush.fill", color: .brandAccent)
+        let label = UILabel.make(String(localized: "Theme"), font: .preferred(.body))
         let control = UISegmentedControl(items: AppTheme.allCases.map(\.title))
         control.selectedSegmentIndex = AppTheme.current.rawValue
         control.addAction(UIAction { _ in
             AppTheme.current = AppTheme(rawValue: control.selectedSegmentIndex) ?? .system
             Haptics.light()
         }, for: .valueChanged)
-        control.accessibilityLabel = "Theme"
+        control.accessibilityLabel = String(localized: "Theme")
         control.accessibilityIdentifier = AccessibilityID.Settings.themeControl
         let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, label, .spacer(), control])
         return ViewContainerCell(hosting: row, insets: NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
@@ -50,24 +107,38 @@ final class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Settings"
+        navigationItem.title = String(localized: "Settings")
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityID.Settings.screen
         tableView.accessibilityIdentifier = AccessibilityID.Settings.table
 
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ActionCell")
         view.addSubview(tableView)
         tableView.pinEdges(to: view)
 
         NotificationCenter.default.addObserver(self, selector: #selector(dataDidChange), name: .dataStoreDidChange, object: nil)
+        if PartnerSyncService.isFeatureEnabled {
+            NotificationCenter.default.addObserver(self, selector: #selector(syncDidChange), name: .partnerSyncDidChange, object: nil)
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(coupleDidChange), name: .coupleProfileDidChange, object: nil)
         refreshGoals()
+    }
+
+    @objc private func coupleDidChange() {
+        photoRow.reload()
     }
 
     @objc private func dataDidChange(_ notification: Notification) {
         guard (notification.object as AnyObject?) !== self else { return }
         refreshGoals()
+    }
+
+    @objc private func syncDidChange() {
+        guard let syncIndex = Section.visible.firstIndex(of: .sync) else { return }
+        tableView.reloadSections(IndexSet(integer: syncIndex), with: .none)
     }
 
     private func refreshGoals() {
@@ -78,18 +149,39 @@ final class SettingsViewController: UIViewController {
         }
     }
 
+    private func makeStartDateRow(_ startDate: Date?) -> UIView {
+        let icon = UIImageView.symbol("calendar", color: .brandAccent)
+        let label = UILabel.make(String(localized: "Together Since"), font: .preferred(.body))
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .compact
+        picker.maximumDate = .now
+        picker.tintColor = .brandAccent
+        picker.date = startDate ?? .now
+        picker.accessibilityLabel = String(localized: "Together Since")
+        picker.accessibilityIdentifier = AccessibilityID.Settings.startDatePicker
+        picker.addAction(UIAction { [weak picker] _ in
+            guard let date = picker?.date else { return }
+            CoupleProfile.update { $0.startDate = date }
+        }, for: .valueChanged)
+        NSLayoutConstraint.activate([icon.widthAnchor.constraint(equalToConstant: 26)])
+        return UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, label, .spacer(), picker])
+    }
+
     // MARK: Actions
+    #if DEBUG
     private func replayOnboarding() {
         Haptics.light()
         AppRouter.hasCompletedOnboarding = false
         AppRouter.transition(to: OnboardingViewController(), in: view.window)
     }
+    #endif
 
     private func confirmResetWeek() {
         confirm(
-            title: "Reset This Week?",
-            message: "Deletes everything logged since the start of this week.",
-            action: "Reset"
+            title: String(localized: "Reset This Week?"),
+            message: String(localized: "Deletes everything logged since the start of this week."),
+            action: String(localized: "Reset")
         ) { [weak self] in
             self?.resetCurrentWeek()
         }
@@ -97,9 +189,9 @@ final class SettingsViewController: UIViewController {
 
     private func confirmEraseAll() {
         confirm(
-            title: "Erase All Data?",
-            message: "Deletes all logged time, rituals and ideas, and restores default goals. This can't be undone.",
-            action: "Erase"
+            title: String(localized: "Erase All Data?"),
+            message: String(localized: "Deletes all logged time, rituals and ideas, and restores default goals. This can't be undone."),
+            action: String(localized: "Erase")
         ) { [weak self] in
             self?.eraseAllData()
         }
@@ -107,7 +199,7 @@ final class SettingsViewController: UIViewController {
 
     private func confirm(title: String, message: String, action: String, handler: @escaping () -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
         alert.addAction(UIAlertAction(title: action, style: .destructive) { _ in handler() })
         present(alert, animated: true)
     }
@@ -130,47 +222,74 @@ final class SettingsViewController: UIViewController {
         }
         store.commit()
         DataBootstrap.syncGoalStorage(context: store.context)
+        CouplePhotoStore.remove()
         Haptics.success()
     }
 }
 
 // MARK: - Table Data Source & Delegate
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int { Section.allCases.count }
+    private func section(at index: Int) -> Section? {
+        Section.visible.indices.contains(index) ? Section.visible[index] : nil
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int { Section.visible.count }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        Section(rawValue: section)?.title
+        self.section(at: section)?.title
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch self.section(at: section) {
+        case .couple:
+            String(localized: "Shown on your Dashboard.")
+        case .sync:
+            String(localized: "Uses your iCloud account. Create a code on one phone, join with it on the other. Activity photos stay on each device.")
+        default:
+            nil
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section) {
+        switch self.section(at: section) {
+        case .couple: coupleCells.count
+        case .sync: SyncRow.rows(isLinked: PartnerSyncService.shared.isLinked).count
         case .goals: goalCells.count
-        case .preferences, .developer: 1
+        case .preferences: 1
+        #if DEBUG
+        case .developer: 1
+        #endif
         case .data: ActionRow.allCases.count
         case nil: 0
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch Section(rawValue: indexPath.section) {
+        switch section(at: indexPath.section) {
+        case .couple:
+            return coupleCells[indexPath.row]
+        case .sync:
+            return syncCell(at: indexPath)
         case .goals:
             return goalCells[indexPath.row]
         case .preferences:
             return themeCell
+        #if DEBUG
         case .developer:
             return actionCell(
                 at: indexPath,
-                title: "Replay Onboarding",
+                title: String(localized: "Replay Onboarding"),
                 symbol: "play.circle.fill",
-                color: .systemPink,
+                color: .brandAccent,
                 identifier: AccessibilityID.Settings.replayOnboarding
             )
+        #endif
         case .data:
             switch ActionRow(rawValue: indexPath.row) {
             case .resetWeek:
                 return actionCell(
                     at: indexPath,
-                    title: "Reset Current Week",
+                    title: String(localized: "Reset Current Week"),
                     symbol: "arrow.counterclockwise.circle.fill",
                     color: .systemRed,
                     identifier: AccessibilityID.Settings.resetWeek
@@ -178,7 +297,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             case .eraseAll, nil:
                 return actionCell(
                     at: indexPath,
-                    title: "Erase All Data",
+                    title: String(localized: "Erase All Data"),
                     symbol: "trash.fill",
                     color: .systemRed,
                     identifier: AccessibilityID.Settings.eraseAll
@@ -186,6 +305,67 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
         case nil:
             return UITableViewCell()
+        }
+    }
+
+    private func syncCell(at indexPath: IndexPath) -> UITableViewCell {
+        let sync = PartnerSyncService.shared
+        let rows = SyncRow.rows(isLinked: sync.isLinked)
+        guard rows.indices.contains(indexPath.row) else { return UITableViewCell() }
+        switch rows[indexPath.row] {
+        case .status:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath)
+            var content = cell.defaultContentConfiguration()
+            content.text = sync.statusText
+            content.textProperties.color = .secondaryLabel
+            content.textProperties.font = .preferredFont(forTextStyle: .subheadline)
+            content.image = UIImage(systemName: sync.isLinked ? "person.2.fill" : "person.2")
+            content.imageProperties.tintColor = .brandAccent
+            cell.contentConfiguration = content
+            cell.selectionStyle = .none
+            return cell
+        case .primary:
+            if sync.isLinked {
+                return actionCell(
+                    at: indexPath,
+                    title: String(localized: "Sync Now"),
+                    symbol: "arrow.triangle.2.circlepath",
+                    color: .brandAccent,
+                    identifier: AccessibilityID.Settings.syncNow
+                )
+            }
+            return actionCell(
+                at: indexPath,
+                title: String(localized: "Create Invite Code"),
+                symbol: "plus.bubble.fill",
+                color: .brandAccent,
+                identifier: AccessibilityID.Settings.createInvite
+            )
+        case .secondary:
+            if sync.isLinked {
+                return actionCell(
+                    at: indexPath,
+                    title: String(localized: "Copy Invite Code"),
+                    symbol: "doc.on.doc.fill",
+                    color: .brandAccent,
+                    identifier: AccessibilityID.Settings.copyCode
+                )
+            }
+            return actionCell(
+                at: indexPath,
+                title: String(localized: "Join with Code"),
+                symbol: "rectangle.and.pencil.and.ellipsis",
+                color: .brandAccent,
+                identifier: AccessibilityID.Settings.joinInvite
+            )
+        case .tertiary:
+            return actionCell(
+                at: indexPath,
+                title: String(localized: "Unlink Partner"),
+                symbol: "link.badge.minus",
+                color: .systemRed,
+                identifier: AccessibilityID.Settings.unlink
+            )
         }
     }
 
@@ -203,19 +383,238 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        [Section.developer.rawValue, Section.data.rawValue].contains(indexPath.section)
+        switch section(at: indexPath.section) {
+        case .sync:
+            let rows = SyncRow.rows(isLinked: PartnerSyncService.shared.isLinked)
+            return rows.indices.contains(indexPath.row) && rows[indexPath.row] != .status
+        #if DEBUG
+        case .developer:
+            return true
+        #endif
+        case .data:
+            return true
+        default:
+            return false
+        }
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        switch Section(rawValue: indexPath.section) {
+        switch section(at: indexPath.section) {
+        case .sync:
+            handleSyncTap(at: indexPath.row)
+        #if DEBUG
         case .developer:
             replayOnboarding()
+        #endif
         case .data:
             ActionRow(rawValue: indexPath.row) == .resetWeek ? confirmResetWeek() : confirmEraseAll()
         default:
             break
         }
+    }
+
+    private func handleSyncTap(at row: Int) {
+        let sync = PartnerSyncService.shared
+        let rows = SyncRow.rows(isLinked: sync.isLinked)
+        guard rows.indices.contains(row) else { return }
+        switch rows[row] {
+        case .status:
+            break
+        case .primary:
+            sync.isLinked ? syncNow() : createInvite()
+        case .secondary:
+            sync.isLinked ? copyInviteCode() : promptJoinCode()
+        case .tertiary:
+            confirmUnlink()
+        }
+    }
+
+    private func createInvite() {
+        Task {
+            do {
+                let code = try await PartnerSyncService.shared.createCouple()
+                Haptics.success()
+                let alert = UIAlertController(
+                    title: String(localized: "Invite Code Ready"),
+                    message: String(localized: "Share this code with your partner:\n\n\(code)"),
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: String(localized: "Copy"), style: .default) { _ in
+                    UIPasteboard.general.string = code
+                })
+                alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .cancel))
+                present(alert, animated: true)
+            } catch {
+                presentSyncError(error)
+            }
+        }
+    }
+
+    private func promptJoinCode() {
+        let alert = UIAlertController(
+            title: String(localized: "Join Partner"),
+            message: String(localized: "Enter the 6-character invite code from your partner."),
+            preferredStyle: .alert
+        )
+        alert.addTextField { field in
+            field.placeholder = "ABC123"
+            field.autocapitalizationType = .allCharacters
+            field.autocorrectionType = .no
+            field.accessibilityIdentifier = AccessibilityID.Settings.joinInvite
+        }
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: String(localized: "Join"), style: .default) { [weak self] _ in
+            let code = alert.textFields?.first?.text ?? ""
+            self?.join(with: code)
+        })
+        present(alert, animated: true)
+    }
+
+    private func join(with code: String) {
+        Task {
+            do {
+                try await PartnerSyncService.shared.joinCouple(code: code)
+                Haptics.success()
+            } catch {
+                presentSyncError(error)
+            }
+        }
+    }
+
+    private func syncNow() {
+        Task {
+            do {
+                try await PartnerSyncService.shared.syncNow()
+                Haptics.success()
+            } catch {
+                presentSyncError(error)
+            }
+        }
+    }
+
+    private func copyInviteCode() {
+        guard let code = PartnerSyncService.shared.coupleCode else { return }
+        UIPasteboard.general.string = code
+        Haptics.light()
+        let alert = UIAlertController(
+            title: String(localized: "Copied"),
+            message: String(localized: "Invite code \(code) is on the clipboard."),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .cancel))
+        present(alert, animated: true)
+    }
+
+    private func confirmUnlink() {
+        confirm(
+            title: String(localized: "Unlink Partner?"),
+            message: String(localized: "This phone will stop syncing. Your local data stays. Your partner can keep using the same code."),
+            action: String(localized: "Unlink")
+        ) {
+            PartnerSyncService.shared.unlink()
+            Haptics.light()
+        }
+    }
+
+    private func presentSyncError(_ error: Error) {
+        Haptics.light()
+        let alert = UIAlertController(
+            title: String(localized: "Sync Unavailable"),
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .cancel))
+        present(alert, animated: true)
+    }
+}
+
+// MARK: - Couple Photo Row
+final class CouplePhotoRow: UIView {
+    private let avatar = CoupleAvatarView(side: 44, showsCameraBadge: false)
+    private let titleLabel = UILabel.make(String(localized: "Couple Photo"), font: .preferred(.body))
+    private let detailLabel = UILabel.make(font: .preferred(.subheadline), color: .secondaryLabel)
+
+    init(onTap: @escaping () -> Void) {
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        avatar.onTap = onTap
+        accessibilityIdentifier = AccessibilityID.Settings.couplePhoto
+
+        let chevron = UIImageView.symbol("chevron.right", color: .tertiaryLabel)
+        let texts = UIStackView.make(.vertical, spacing: 2, [titleLabel, detailLabel])
+        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [avatar, texts, .spacer(), chevron])
+        addSubview(row)
+        row.pinEdges(to: self)
+        NSLayoutConstraint.activate([heightAnchor.constraint(greaterThanOrEqualToConstant: 44)])
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tap)
+        reload()
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    func reload() {
+        avatar.reload()
+        detailLabel.text = CouplePhotoStore.hasPhoto
+            ? String(localized: "Tap to change")
+            : String(localized: "Add a photo")
+    }
+
+    @objc private func handleTap() {
+        avatar.onTap?()
+    }
+}
+
+// MARK: - Couple Text Row
+/// "Title ........ value" row with an inline, right-aligned text field that saves when editing ends.
+final class CoupleTextRow: UIView, UITextFieldDelegate {
+    private let field = UITextField()
+    private let onCommit: (String) -> Void
+
+    init(symbol: String, title: String, placeholder: String, text: String, identifier: String, onCommit: @escaping (String) -> Void) {
+        self.onCommit = onCommit
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.text = text
+        field.placeholder = placeholder
+        field.font = .preferred(.body)
+        field.adjustsFontForContentSizeCategory = true
+        field.textColor = .secondaryLabel
+        field.textAlignment = .right
+        field.autocapitalizationType = .sentences
+        field.returnKeyType = .done
+        field.clearButtonMode = .whileEditing
+        field.accessibilityLabel = title
+        field.accessibilityIdentifier = identifier
+        field.delegate = self
+        field.addAction(UIAction { [weak self] _ in self?.commit() }, for: .editingDidEnd)
+
+        let icon = UIImageView.symbol(symbol, color: .brandAccent)
+        let label = UILabel.make(title, font: .preferred(.body))
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, label, field])
+        addSubview(row)
+        row.pinEdges(to: self)
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 26),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 32),
+        ])
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    private func commit() {
+        onCommit(field.text ?? "")
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 

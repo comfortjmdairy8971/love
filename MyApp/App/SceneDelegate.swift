@@ -7,7 +7,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         let window = UIWindow(windowScene: windowScene)
-        window.tintColor = .systemPink
+        window.tintColor = .brandAccent
         window.overrideUserInterfaceStyle = AppTheme.current.interfaceStyle
         window.rootViewController = UserDefaults.standard.bool(forKey: DefaultsKey.hasCompletedOnboarding)
             ? MainTabBarController()

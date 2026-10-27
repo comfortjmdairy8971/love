@@ -25,9 +25,9 @@ enum IdeaCategory: String, CaseIterable, Identifiable {
 
     var color: UIColor {
         switch self {
-        case .date: .systemPink
-        case .surprise: .systemOrange
-        case .chore: .systemBlue
+        case .date: .brandAccent
+        case .surprise: .brandOrange
+        case .chore: .brandViolet
         }
     }
 
@@ -43,12 +43,14 @@ enum IdeaCategory: String, CaseIterable, Identifiable {
 // MARK: - Idea
 @Model
 final class Idea {
+    var id: UUID = UUID()
     var title: String
     var categoryRaw: String
     var isDone: Bool
     var createdAt: Date
 
     init(title: String, category: IdeaCategory) {
+        self.id = UUID()
         self.title = title
         self.categoryRaw = category.rawValue
         self.isDone = false

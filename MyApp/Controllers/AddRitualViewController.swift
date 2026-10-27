@@ -117,8 +117,8 @@ final class AddRitualViewController: UIViewController {
     private func updateIconSelection() {
         for (button, symbol) in zip(iconButtons, Ritual.iconChoices) {
             let isSelected = symbol == selectedIcon
-            button.configuration?.baseBackgroundColor = isSelected ? .systemPink : UIColor.systemPink.withAlphaComponent(0.1)
-            button.configuration?.baseForegroundColor = isSelected ? .white : .systemPink
+            button.configuration?.baseBackgroundColor = isSelected ? .brandAccent : UIColor.brandAccent.withAlphaComponent(0.1)
+            button.configuration?.baseForegroundColor = isSelected ? .white : .brandAccent
             button.accessibilityTraits = isSelected ? [.button, .selected] : .button
         }
     }
