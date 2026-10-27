@@ -30,7 +30,7 @@ final class HeroBannerView: UIView {
 
     private func setUpInProgressCard() {
         inProgressCard.applyCardStyle()
-        let title = UILabel.make("Haven't done in a while", font: .preferred(.headline))
+        let title = UILabel.make(String(localized: "Haven't done in a while"), font: .preferred(.headline))
         let header = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [headerIcon, title, .spacer()])
         let pills = UIStackView.make(.horizontal, spacing: 12, distribution: .fillEqually, [goingOutPill, adventuresPill])
         let content = UIStackView.make(.vertical, spacing: 12, [header, pills, subtitleLabel])
@@ -59,9 +59,9 @@ final class HeroBannerView: UIView {
         iconCircle.addSubview(icon)
 
         let eyebrow = UILabel.make(font: .preferred(.caption1, weight: .heavy), color: UIColor.white.withAlphaComponent(0.9))
-        eyebrow.attributedText = NSAttributedString(string: "ALL WEEKLY GOALS COMPLETE!", attributes: [.kern: 0.8])
+        eyebrow.attributedText = NSAttributedString(string: String(localized: "ALL WEEKLY GOALS COMPLETE!"), attributes: [.kern: 0.8])
         let message = UILabel.make(
-            "Your weekly goals achieved! A great reason to celebrate together! 🎉",
+            String(localized: "Your weekly goals achieved! A great reason to celebrate together! 🎉"),
             font: .preferred(.subheadline, weight: .semibold),
             color: .white,
             lines: 0
@@ -106,15 +106,19 @@ final class HeroBannerView: UIView {
 
     private static func subtitle(goingOutDays: Int?, adventureDays: Int?) -> String {
         if let days = goingOutDays, days > 0 {
-            return "\(days) \(days == 1 ? "day" : "days") since your last date night out"
+            return days == 1
+                ? String(localized: "1 day since your last date night out")
+                : String(localized: "\(days) days since your last date night out")
         }
         if let days = adventureDays, days > 0 {
-            return "\(days) \(days == 1 ? "day" : "days") since your last new adventure"
+            return days == 1
+                ? String(localized: "1 day since your last new adventure")
+                : String(localized: "\(days) days since your last new adventure")
         }
         if goingOutDays == 0 || adventureDays == 0 {
-            return "You made time for Going Out or New Adventures today!"
+            return String(localized: "You made time for Going Out or New Adventures today!")
         }
-        return "Log a date night out or a new adventure to start tracking."
+        return String(localized: "Log a date night out or a new adventure to start tracking.")
     }
 }
 
@@ -147,10 +151,10 @@ final class DaysSincePillView: UIView {
 
     func configure(days: Int?, overdueDays: Int) {
         let text = switch days {
-        case nil: "Not yet"
-        case 0: "Today"
-        case 1: "1 day"
-        case let days?: "\(days) days"
+        case nil: String(localized: "Not yet")
+        case 0: String(localized: "Today")
+        case 1: String(localized: "1 day")
+        case let days?: String(localized: "\(days) days")
         }
         valueLabel.text = text
         valueLabel.textColor = (days ?? .max) >= overdueDays ? .systemOrange : .label

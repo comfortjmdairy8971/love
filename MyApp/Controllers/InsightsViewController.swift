@@ -23,34 +23,44 @@ final class InsightsViewController: UIViewController {
     private let rangeControl = UISegmentedControl(items: TimeSpan.allCases.map(\.title))
 
     // Summary
-    private let thisWeekTile = StatTileView(title: "This week", color: .brandAccent)
-    private let averageTile = StatTileView(title: "Weekly average", color: .systemPurple)
+    private let thisWeekTile = StatTileView(title: String(localized: "This week"), color: .brandAccent)
+    private let averageTile = StatTileView(title: String(localized: "Weekly average"), color: .systemPurple)
     private let balanceMessageLabel = UILabel.make(font: .preferred(.subheadline, weight: .medium), lines: 0)
     private let leadingChip = ChipView()
     private let laggingChip = ChipView()
 
     // Peak days
-    private let peakCard = InsightCardView(title: "Best Day for Connection", subtitle: "")
+    private let peakCard = InsightCardView(title: String(localized: "Best Day for Connection"), subtitle: "")
     private let bestDayLabel = UILabel.make(font: .preferred(.title3, weight: .bold))
     private let peakHost = UIHostingController(rootView: WeekdayPeakChart())
 
     // Charts
-    private let weeklyCard = InsightCardView(title: "Weekly Breakdown", subtitle: "Hours per week, by category")
+    private let weeklyCard = InsightCardView(
+        title: String(localized: "Weekly Breakdown"),
+        subtitle: String(localized: "Hours per week, by category")
+    )
     private let weeklyHost = UIHostingController(rootView: WeeklyBreakdownChart())
     private let weeklyEmpty = InsightsViewController.makeEmptyChart()
-    private let balanceCard = InsightCardView(title: "Category Balance", subtitle: "")
+    private let balanceCard = InsightCardView(title: String(localized: "Category Balance"), subtitle: "")
     private let donutHost = UIHostingController(rootView: CategoryBalanceChart())
     private let legendStack = UIStackView.make(.vertical, spacing: 10)
     private let balanceEmpty = InsightsViewController.makeEmptyChart()
 
     // Recap
-    private let monthControl = UISegmentedControl(items: ["This Month", "Last Month"])
+    private let monthControl = UISegmentedControl(items: [
+        String(localized: "This Month"),
+        String(localized: "Last Month"),
+    ])
     private let recapCard = MonthlyRecapCardView()
-    private let shareButton = UIButton(configuration: .capsule(title: "Share Recap", symbol: "square.and.arrow.up", color: .brandAccent))
+    private let shareButton = UIButton(configuration: .capsule(
+        title: String(localized: "Share Recap"),
+        symbol: "square.and.arrow.up",
+        color: .brandAccent
+    ))
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Insights"
+        navigationItem.title = String(localized: "Insights")
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityID.Insights.screen
         rangeControl.accessibilityIdentifier = AccessibilityID.Insights.rangeControl
@@ -120,7 +130,11 @@ final class InsightsViewController: UIViewController {
     }
 
     private static func makeEmptyChart() -> UIView {
-        EmptyStateView(symbol: "chart.bar.xaxis", title: "No activity yet", message: "Log some time together to see your trends.")
+        EmptyStateView(
+            symbol: "chart.bar.xaxis",
+            title: String(localized: "No activity yet"),
+            message: String(localized: "Log some time together to see your trends.")
+        )
     }
 
     private func makeBalanceSummaryCard() -> UIView {
@@ -145,9 +159,13 @@ final class InsightsViewController: UIViewController {
     }
 
     private func makeRecapSection() -> UIView {
-        let title = UILabel.make("Monthly Recap", font: .preferred(.headline))
+        let title = UILabel.make(String(localized: "Monthly Recap"), font: .preferred(.headline))
         title.accessibilityTraits = .header
-        let subtitle = UILabel.make("A shareable summary of your month", font: .preferred(.caption1), color: .secondaryLabel)
+        let subtitle = UILabel.make(
+            String(localized: "A shareable summary of your month"),
+            font: .preferred(.caption1),
+            color: .secondaryLabel
+        )
         let header = UIStackView.make(.vertical, spacing: 2, [title, subtitle])
 
         monthControl.selectedSegmentIndex = 0
@@ -218,7 +236,7 @@ final class InsightsViewController: UIViewController {
             weeks: range.rawValue
         )
 
-        balanceCard.setSubtitle("Share of time over the last \(range.rawValue) weeks")
+        balanceCard.setSubtitle(String(localized: "Share of time over the last \(range.rawValue) weeks"))
         donutHost.view.isHidden = !hasData
         legendStack.isHidden = !hasData
         balanceEmpty.isHidden = hasData
@@ -237,12 +255,15 @@ final class InsightsViewController: UIViewController {
         let thisWeek = weekTotal(weeksAgo: 0)
         let delta = thisWeek - weekTotal(weeksAgo: 1)
         let deltaText = switch delta {
-        case 0: "Same as last week"
-        case 1...: "+\(formatDuration(minutes: delta)) vs last week"
-        default: "-\(formatDuration(minutes: -delta)) vs last week"
+        case 0: String(localized: "Same as last week")
+        case 1...: String(localized: "+\(formatDuration(minutes: delta)) vs last week")
+        default: String(localized: "-\(formatDuration(minutes: -delta)) vs last week")
         }
         thisWeekTile.configure(value: formatDuration(minutes: thisWeek), detail: deltaText)
-        averageTile.configure(value: formatDuration(minutes: rangeTotal / range.rawValue), detail: "Last \(range.rawValue) weeks")
+        averageTile.configure(
+            value: formatDuration(minutes: rangeTotal / range.rawValue),
+            detail: String(localized: "Last \(range.rawValue) weeks")
+        )
     }
 
     private func updateBalanceSummary() {
@@ -260,21 +281,21 @@ final class InsightsViewController: UIViewController {
 
         balanceMessageLabel.text = switch (dominant, lagging) {
         case (nil, let lagging?):
-            "Nothing logged yet this week. Try scheduling a \(lagging.title) activity soon."
+            String(localized: "Nothing logged yet this week. Try scheduling a \(lagging.title) activity soon.")
         case (let dominant?, let lagging?) where laggingNeedsLove:
-            "Great job on \(dominant.title) this week! Try scheduling a \(lagging.title) activity soon."
+            String(localized: "Great job on \(dominant.title) this week! Try scheduling a \(lagging.title) activity soon.")
         case (let dominant?, _):
-            "Great job on \(dominant.title) this week! Every goal is on track."
+            String(localized: "Great job on \(dominant.title) this week! Every goal is on track.")
         default:
-            "Log some time together to see your balance."
+            String(localized: "Log some time together to see your balance.")
         }
 
         if let dominant {
-            leadingChip.configure(text: "Leading: \(dominant.title)", symbol: dominant.icon, color: dominant.color)
+            leadingChip.configure(text: String(localized: "Leading: \(dominant.title)"), symbol: dominant.icon, color: dominant.color)
         }
         leadingChip.isHidden = dominant == nil
         if let lagging, laggingNeedsLove {
-            laggingChip.configure(text: "Lagging: \(lagging.title)", symbol: lagging.icon, color: lagging.color)
+            laggingChip.configure(text: String(localized: "Lagging: \(lagging.title)"), symbol: lagging.icon, color: lagging.color)
         }
         laggingChip.isHidden = !laggingNeedsLove
     }
@@ -292,10 +313,10 @@ final class InsightsViewController: UIViewController {
 
         if let best {
             bestDayLabel.text = calendar.weekdaySymbols[best.key - 1]
-            peakCard.setSubtitle("\(formatDuration(minutes: best.value)) logged over the last \(range.rawValue) weeks")
+            peakCard.setSubtitle(String(localized: "\(formatDuration(minutes: best.value)) logged over the last \(range.rawValue) weeks"))
         } else {
-            bestDayLabel.text = "Not enough data yet"
-            peakCard.setSubtitle("Your peak connection day will appear here")
+            bestDayLabel.text = String(localized: "Not enough data yet")
+            peakCard.setSubtitle(String(localized: "Your peak connection day will appear here"))
         }
         peakHost.view.isHidden = best == nil
         peakHost.rootView = WeekdayPeakChart(totals: totals, bestWeekday: best?.key)

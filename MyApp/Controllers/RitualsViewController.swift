@@ -11,12 +11,14 @@ final class RitualsViewController: UIViewController {
         let icon: String
         let frequency: RitualFrequency
 
-        static let all: [Suggestion] = [
-            .init(title: "Friday Date Night", icon: "moon.stars.fill", frequency: .weekly),
-            .init(title: "Morning coffee together", icon: "cup.and.saucer.fill", frequency: .daily),
-            .init(title: "Sunday walk", icon: "figure.walk", frequency: .weekly),
-            .init(title: "Monthly adventure", icon: "map.fill", frequency: .monthly),
-        ]
+        static var all: [Suggestion] {
+            [
+                .init(title: String(localized: "Friday Date Night"), icon: "moon.stars.fill", frequency: .weekly),
+                .init(title: String(localized: "Morning coffee together"), icon: "cup.and.saucer.fill", frequency: .daily),
+                .init(title: String(localized: "Sunday walk"), icon: "figure.walk", frequency: .weekly),
+                .init(title: String(localized: "Monthly adventure"), icon: "map.fill", frequency: .monthly),
+            ]
+        }
     }
 
     private let store = DataStore.shared
@@ -24,7 +26,10 @@ final class RitualsViewController: UIViewController {
     private var suggestions: [Suggestion] = []
     private var sections: [Section] { suggestions.isEmpty ? [.active] : [.active, .suggestions] }
 
-    private let segmentedControl = UISegmentedControl(items: ["Rituals", "Ideas"])
+    private let segmentedControl = UISegmentedControl(items: [
+        String(localized: "Rituals"),
+        String(localized: "Ideas"),
+    ])
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let ideasViewController = IdeasViewController()
     private lazy var addButton = UIBarButtonItem(
@@ -33,16 +38,16 @@ final class RitualsViewController: UIViewController {
     )
     private lazy var emptyCell = ViewContainerCell(hosting: EmptyStateView(
         symbol: "flame",
-        title: "No rituals yet",
-        message: "Rituals are the little traditions you repeat. Check one off each time to grow its streak."
+        title: String(localized: "No rituals yet"),
+        message: String(localized: "Rituals are the little traditions you repeat. Check one off each time to grow its streak.")
     ))
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Rituals & Ideas"
+        navigationItem.title = String(localized: "Rituals & Ideas")
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityID.Rituals.screen
-        addButton.accessibilityLabel = "Add New Ritual"
+        addButton.accessibilityLabel = String(localized: "Add New Ritual")
         addButton.accessibilityIdentifier = AccessibilityID.Rituals.addButton
         segmentedControl.accessibilityIdentifier = AccessibilityID.Rituals.modeControl
         tableView.accessibilityIdentifier = AccessibilityID.Rituals.table
@@ -171,13 +176,15 @@ extension RitualsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch sections[section] {
-        case .active: rituals.isEmpty ? nil : "Active Streaks"
-        case .suggestions: "Suggestions"
+        case .active: rituals.isEmpty ? nil : String(localized: "Active Streaks")
+        case .suggestions: String(localized: "Suggestions")
         }
     }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        sections[section] == .active && !rituals.isEmpty ? "Missing a whole period resets the streak." : nil
+        sections[section] == .active && !rituals.isEmpty
+            ? String(localized: "Missing a whole period resets the streak.")
+            : nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -223,7 +230,7 @@ extension RitualsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard sections[indexPath.section] == .active, !rituals.isEmpty else { return nil }
         let ritual = rituals[indexPath.row]
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+        let delete = UIContextualAction(style: .destructive, title: String(localized: "Delete")) { [weak self] _, _, completion in
             self?.delete(ritual)
             completion(true)
         }

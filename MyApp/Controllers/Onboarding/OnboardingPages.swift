@@ -286,10 +286,10 @@ struct RitualPreset {
     let frequency: RitualFrequency
 
     static let all: [RitualPreset] = [
-        .init(slug: "fridayDinner", title: "Friday Dinner Out", icon: "fork.knife", frequency: .weekly),
-        .init(slug: "sundayWalk", title: "Sunday Morning Walk", icon: "figure.walk", frequency: .weekly),
-        .init(slug: "weeklyCheckIn", title: "Weekly Check-in", icon: "bubble.left.and.bubble.right.fill", frequency: .weekly),
-        .init(slug: "phoneFreeEvening", title: "Phone-Free Evening", icon: "iphone.slash", frequency: .weekly),
+        .init(slug: "fridayDinner", title: String(localized: "Friday Dinner Out"), icon: "fork.knife", frequency: .weekly),
+        .init(slug: "sundayWalk", title: String(localized: "Sunday Morning Walk"), icon: "figure.walk", frequency: .weekly),
+        .init(slug: "weeklyCheckIn", title: String(localized: "Weekly Check-in"), icon: "bubble.left.and.bubble.right.fill", frequency: .weekly),
+        .init(slug: "phoneFreeEvening", title: String(localized: "Phone-Free Evening"), icon: "iphone.slash", frequency: .weekly),
     ]
 }
 

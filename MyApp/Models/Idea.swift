@@ -9,9 +9,9 @@ enum IdeaCategory: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .date: "Going Out"
-        case .surprise: "Adventures"
-        case .chore: "At Home"
+        case .date: String(localized: "Going Out")
+        case .surprise: String(localized: "Adventures")
+        case .chore: String(localized: "At Home")
         }
     }
 
@@ -33,9 +33,9 @@ enum IdeaCategory: String, CaseIterable, Identifiable {
 
     var placeholder: String {
         switch self {
-        case .date: "New date night or outing idea"
-        case .surprise: "New adventure or surprise idea"
-        case .chore: "Home or nesting project to share"
+        case .date: String(localized: "New date night or outing idea")
+        case .surprise: String(localized: "New adventure or surprise idea")
+        case .chore: String(localized: "Home or nesting project to share")
         }
     }
 }

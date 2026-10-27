@@ -233,8 +233,8 @@ final class DashboardViewController: UIViewController {
     private func presentCategoryPicker() {
         let minutes = max(1, elapsedSeconds / 60)
         let sheet = UIAlertController(
-            title: "Which category did you spend time on?",
-            message: "Logs \(formatDuration(minutes: minutes)) together.",
+            title: String(localized: "Which category did you spend time on?"),
+            message: String(localized: "Logs \(formatDuration(minutes: minutes)) together."),
             preferredStyle: .actionSheet
         )
         for category in ActivityCategory.allCases {
@@ -242,10 +242,10 @@ final class DashboardViewController: UIViewController {
                 self?.saveTimer(to: category)
             })
         }
-        sheet.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: String(localized: "Discard"), style: .destructive) { [weak self] _ in
             self?.resetTimer()
         })
-        sheet.addAction(UIAlertAction(title: "Keep Timing", style: .cancel) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: String(localized: "Keep Timing"), style: .cancel) { [weak self] _ in
             self?.resumeTimer()
         })
         sheet.popoverPresentationController?.sourceView = livePill.stopButton

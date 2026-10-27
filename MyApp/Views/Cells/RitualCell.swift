@@ -43,7 +43,9 @@ final class RitualCell: UITableViewCell {
         titleLabel.text = ritual.title
 
         let badgeColor: UIColor = streak > 0 ? .brandOrange : .secondaryLabel
-        streakBadge.text = streak > 0 ? "🔥 \(streak) \(frequency.unit) streak" : "\(frequency.title) · start a streak"
+        streakBadge.text = streak > 0
+            ? String(localized: "🔥 \(streak) \(frequency.unit) streak")
+            : String(localized: "\(frequency.title) · start a streak")
         streakBadge.textColor = badgeColor
         streakBadge.backgroundColor = badgeColor.withAlphaComponent(0.12)
 

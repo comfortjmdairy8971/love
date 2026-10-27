@@ -59,7 +59,7 @@ final class MonthlyRecapCardView: UIView {
 
     private func setUpContent() {
         let eyebrow = Self.label(font: .systemFont(ofSize: 12, weight: .heavy), alpha: 0.8)
-        eyebrow.attributedText = NSAttributedString(string: "OUR MONTH", attributes: [.kern: 2])
+        eyebrow.attributedText = NSAttributedString(string: String(localized: "OUR MONTH"), attributes: [.kern: 2])
         let titles = UIStackView.make(.vertical, spacing: 2, [eyebrow, monthLabel])
         let header = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [AppLogoPlaceholderView(), titles, .spacer()])
 
@@ -74,13 +74,13 @@ final class MonthlyRecapCardView: UIView {
     func configure(with recap: MonthlyRecap) {
         monthLabel.text = recap.monthName
         hoursLabel.text = recap.hoursText
-        subtitleLabel.text = "hours together · \(recap.moments) moments"
+        subtitleLabel.text = String(localized: "hours together · \(recap.moments) moments")
         topCategoryBadge.configure(
             symbol: recap.topCategory?.icon ?? "heart.fill",
-            caption: "Top category",
+            caption: String(localized: "Top category"),
             value: recap.topCategory?.title ?? "—"
         )
-        ritualsBadge.configure(symbol: "flame.fill", caption: "Rituals done", value: "\(recap.ritualsCompleted)")
+        ritualsBadge.configure(symbol: "flame.fill", caption: String(localized: "Rituals done"), value: "\(recap.ritualsCompleted)")
 
         breakdownStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         let maxMinutes = max(recap.breakdown.first?.minutes ?? 0, 1)

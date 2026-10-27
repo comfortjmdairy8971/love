@@ -8,7 +8,7 @@ final class AddRitualViewController: UIViewController {
     private let frequencyControl = UISegmentedControl(items: RitualFrequency.allCases.map(\.title))
     private var iconButtons: [UIButton] = []
     private var selectedIcon = Ritual.defaultIcon
-    private lazy var addButton = UIBarButtonItem(title: "Add", primaryAction: UIAction { [weak self] _ in self?.add() })
+    private lazy var addButton = UIBarButtonItem(title: String(localized: "Add"), primaryAction: UIAction { [weak self] _ in self?.add() })
 
     private var trimmedTitle: String {
         (titleField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
@@ -16,7 +16,7 @@ final class AddRitualViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "New Ritual"
+        title = String(localized: "New Ritual")
         view.backgroundColor = .systemGroupedBackground
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             systemItem: .cancel,
@@ -44,7 +44,7 @@ final class AddRitualViewController: UIViewController {
         scrollView.pinEdges(to: view)
 
         titleField.translatesAutoresizingMaskIntoConstraints = false
-        titleField.placeholder = "e.g. Friday Date Night"
+        titleField.placeholder = String(localized: "e.g. Friday Date Night")
         titleField.font = .preferredFont(forTextStyle: .body)
         titleField.adjustsFontForContentSizeCategory = true
         titleField.clearButtonMode = .whileEditing
@@ -63,10 +63,10 @@ final class AddRitualViewController: UIViewController {
         frequencyControl.translatesAutoresizingMaskIntoConstraints = false
         frequencyControl.selectedSegmentIndex = RitualFrequency.allCases.firstIndex(of: .weekly) ?? 0
 
-        let iconTitle = UILabel.make("ICON", font: .preferred(.footnote), color: .secondaryLabel)
+        let iconTitle = UILabel.make(String(localized: "ICON"), font: .preferred(.footnote), color: .secondaryLabel)
         let content = UIStackView.make(.vertical, spacing: 16, [
             fieldCard,
-            labeled("REPEATS", frequencyControl),
+            labeled(String(localized: "REPEATS"), frequencyControl),
             iconTitle,
             makeIconGrid(),
         ])

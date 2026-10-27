@@ -9,17 +9,17 @@ enum RitualFrequency: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .daily: "Daily"
-        case .weekly: "Weekly"
-        case .monthly: "Monthly"
+        case .daily: String(localized: "Daily")
+        case .weekly: String(localized: "Weekly")
+        case .monthly: String(localized: "Monthly")
         }
     }
 
     var unit: String {
         switch self {
-        case .daily: "day"
-        case .weekly: "week"
-        case .monthly: "month"
+        case .daily: String(localized: "day")
+        case .weekly: String(localized: "week")
+        case .monthly: String(localized: "month")
         }
     }
 

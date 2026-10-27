@@ -163,7 +163,7 @@ extension IdeasViewController: UITableViewDataSource, UITableViewDelegate {
         case .empty:
             let cell = ViewContainerCell(hosting: EmptyStateView(
                 symbol: selectedCategory.icon,
-                title: "No \(selectedCategory.title.lowercased()) ideas yet",
+                title: String(localized: "No \(selectedCategory.title.lowercased()) ideas yet"),
                 message: "Add your first one above."
             ))
             cell.backgroundConfiguration = .clear()
@@ -198,7 +198,7 @@ extension IdeasViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let idea = idea(at: indexPath) else { return nil }
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+        let delete = UIContextualAction(style: .destructive, title: String(localized: "Delete")) { [weak self] _, _, completion in
             self?.delete(idea)
             completion(true)
         }

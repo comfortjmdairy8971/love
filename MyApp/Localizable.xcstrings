@@ -1,1150 +1,2116 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "%@ days and counting" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ jours et ça continue"
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ days and counting": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ jours et ça continue"
           }
         }
       }
     },
-    "%@ days since %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ jours depuis %@"
+    "%@ days since %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ jours depuis %@"
           }
         }
       }
     },
-    "%lld of %lld selected" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld sur %lld sélectionné(s)"
+    "%lld of %lld selected": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sur %lld sélectionné(s)"
           }
         }
       }
     },
-    "1 day and counting" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 jour et ça continue"
+    "1 day and counting": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 jour et ça continue"
           }
         }
       }
     },
-    "1 day since %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 jour depuis %@"
+    "1 day since %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 jour depuis %@"
           }
         }
       }
     },
-    "A brand-new story — how exciting! ✨" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Une toute nouvelle histoire — quel début ! ✨"
+    "A brand-new story — how exciting! ✨": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une toute nouvelle histoire — quel début ! ✨"
           }
         }
       }
     },
-    "A few words" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quelques mots"
+    "A few words": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quelques mots"
           }
         }
       }
     },
-    "Add a photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter une photo"
+    "Add a photo": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une photo"
           }
         }
       }
     },
-    "Add a photo of you two" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajoutez une photo de vous deux"
+    "Add a photo of you two": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez une photo de vous deux"
           }
         }
       }
     },
-    "Add both of your names so every moment feels like yours." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajoutez vos deux prénoms pour que chaque moment soit le vôtre."
+    "Add both of your names so every moment feels like yours.": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez vos deux prénoms pour que chaque moment soit le vôtre."
           }
         }
       }
     },
-    "Add name" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter un prénom"
+    "Add name": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un prénom"
           }
         }
       }
     },
-    "Add the day your story began in Settings" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajoutez le début de votre histoire dans Réglages"
+    "Add the day your story began in Settings": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez le début de votre histoire dans Réglages"
           }
         }
       }
     },
-    "Cancel" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
+    "Cancel": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
           }
         }
       }
     },
-    "Category" : {
-
+    "Category": {},
+    "Choose how many minutes per week you want to aim for in each area.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez combien de minutes par semaine viser dans chaque domaine."
+          }
+        }
+      }
+    },
+    "Choose Photo": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir une photo"
+          }
+        }
+      }
+    },
+    "Continue": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer"
+          }
+        }
+      }
+    },
+    "Copied": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copié"
+          }
+        }
+      }
+    },
+    "Copy": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier"
+          }
+        }
+      }
+    },
+    "Copy Invite Code": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier le code d’invitation"
+          }
+        }
+      }
+    },
+    "Couple photo": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo du couple"
+          }
+        }
+      }
+    },
+    "Couple Photo": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo du couple"
+          }
+        }
+      }
+    },
+    "Create Invite Code": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créer un code d’invitation"
+          }
+        }
+      }
+    },
+    "Dark": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sombre"
+          }
+        }
+      }
+    },
+    "Dashboard": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tableau de bord"
+          }
+        }
+      }
+    },
+    "Data Management": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestion des données"
+          }
+        }
+      }
+    },
+    "Day": {},
+    "Deletes all logged time, rituals and ideas, and restores default goals. This can't be undone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprime tout le temps enregistré, les rituels et les idées, et restaure les objectifs par défaut. Irréversible."
+          }
+        }
+      }
+    },
+    "Deletes everything logged since the start of this week.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprime tout ce qui a été enregistré depuis le début de la semaine."
+          }
+        }
+      }
+    },
+    "Developer Tools": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Outils développeur"
+          }
+        }
+      }
+    },
+    "Double tap to add or change photo": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez deux fois pour ajouter ou changer la photo"
+          }
+        }
+      }
+    },
+    "Enter the 6-character invite code from your partner.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisissez le code d’invitation à 6 caractères de votre partenaire."
+          }
+        }
+      }
+    },
+    "Enter the 6-character invite code.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisissez le code d’invitation à 6 caractères."
+          }
+        }
+      }
+    },
+    "Erase": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer"
+          }
+        }
+      }
+    },
+    "Erase All Data": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer toutes les données"
+          }
+        }
+      }
+    },
+    "Erase All Data?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer toutes les données ?"
+          }
+        }
+      }
+    },
+    "First look, first spark — however it started.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premier regard, première étincelle — peu importe comment."
+          }
+        }
+      }
+    },
+    "Get Started": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commencer"
+          }
+        }
+      }
+    },
+    "Happy %lld-year anniversary! 🎉": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joyeux %lldᵉ anniversaire ! 🎉"
+          }
+        }
+      }
+    },
+    "Happy 1-year anniversary! 🎉": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joyeux 1ᵉʳ anniversaire ! 🎉"
+          }
+        }
+      }
+    },
+    "hours": {},
+    "Hours": {},
+    "How did your paths cross?": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment vos chemins se sont croisés ?"
+          }
+        }
+      }
+    },
+    "How You Met": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment vous vous êtes rencontrés"
+          }
+        }
+      }
+    },
+    "How your story began": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment votre histoire a commencé"
+          }
+        }
+      }
+    },
+    "iCloud is unavailable right now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud est indisponible pour le moment."
+          }
+        }
+      }
+    },
+    "Insights": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyses"
+          }
+        }
+      }
+    },
+    "Invite code %@ is on the clipboard.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le code %@ est dans le presse-papiers."
+          }
+        }
+      }
+    },
+    "Invite Code Ready": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code d’invitation prêt"
+          }
+        }
+      }
+    },
+    "Joie Libre Moments": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joie Libre Moments"
+          }
+        }
+      }
+    },
+    "Join": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoindre"
+          }
+        }
+      }
+    },
+    "Join Partner": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoindre le partenaire"
+          }
+        }
+      }
+    },
+    "Join with Code": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoindre avec un code"
+          }
+        }
+      }
+    },
+    "Light": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clair"
+          }
+        }
+      }
+    },
+    "Linked · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lié · %@"
+          }
+        }
+      }
+    },
+    "Linked · %@ · synced %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lié · %@ · sync %@ "
+          }
+        }
+      }
+    },
+    "Make time together": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prenez du temps à deux"
+          }
+        }
+      }
+    },
+    "Minutes": {},
+    "Next": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suivant"
+          }
+        }
+      }
+    },
+    "No couple found for that code.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun couple trouvé pour ce code."
+          }
+        }
+      }
+    },
+    "Not linked yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore lié"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "Optional": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facultatif"
+          }
+        }
+      }
+    },
+    "Optional — a sentence or two you'll love rereading later.": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facultatif — une phrase ou deux que vous aimerez relire plus tard."
+          }
+        }
+      }
+    },
+    "Optional — it shows on your home screen.": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facultatif — elle apparaît sur votre écran d’accueil."
+          }
+        }
+      }
+    },
+    "Our Story": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notre histoire"
+          }
+        }
+      }
+    },
+    "Partner Sync": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync partenaire"
+          }
+        }
+      }
+    },
+    "Partner's Name": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prénom du partenaire"
+          }
+        }
+      }
+    },
+    "Pick 1–2 Initial Rituals": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez 1 ou 2 rituels de départ"
+          }
+        }
+      }
+    },
+    "Pick the day you started dating — we'll count every day since.": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez le jour où vous avez commencé à sortir ensemble — on comptera chaque jour depuis."
+          }
+        }
+      }
+    },
+    "Pick your first rituals": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez vos premiers rituels"
+          }
+        }
+      }
+    },
+    "Preferences": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Préférences"
+          }
+        }
+      }
+    },
+    "Recurring habits keep connection consistent week after week.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des habitudes récurrentes entretiennent le lien semaine après semaine."
+          }
+        }
+      }
+    },
+    "Remove Photo": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer la photo"
+          }
+        }
+      }
+    },
+    "Replay Onboarding": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejouer l’onboarding"
+          }
+        }
+      }
+    },
+    "Reset": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser"
+          }
+        }
+      }
+    },
+    "Reset Current Week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser la semaine"
+          }
+        }
+      }
+    },
+    "Reset This Week?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser cette semaine ?"
+          }
+        }
+      }
+    },
+    "Rituals": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rituels"
+          }
+        }
+      }
+    },
+    "Set weekly goals for quality time, track meaningful connection, and build recurring rituals together.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixez des objectifs de temps de qualité, suivez votre connexion et créez des rituels ensemble."
+          }
+        }
+      }
+    },
+    "Set Your Weekly Goals": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixez vos objectifs hebdomadaires"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages"
+          }
+        }
+      }
+    },
+    "Share a photo of you together.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partagez une photo de vous deux."
+          }
+        }
+      }
+    },
+    "Share this code with your partner:\n\n%@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partagez ce code avec votre partenaire :\n\n%@"
+          }
+        }
+      }
+    },
+    "Shown on your Dashboard.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affiché sur votre tableau de bord."
+          }
+        }
+      }
+    },
+    "Shown together on your home screen.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affichés ensemble sur votre écran d’accueil."
+          }
+        }
+      }
+    },
+    "Sign in to iCloud in Settings to sync.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connectez-vous à iCloud dans Réglages pour synchroniser."
+          }
+        }
+      }
+    },
+    "Skip": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer"
+          }
+        }
+      }
+    },
+    "Start Tracking": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commencer le suivi"
+          }
+        }
+      }
+    },
+    "Sync Now": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchroniser maintenant"
+          }
+        }
+      }
+    },
+    "Sync Unavailable": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync indisponible"
+          }
+        }
+      }
+    },
+    "Synced data looks damaged. Try again.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les données synchronisées semblent endommagées. Réessayez."
+          }
+        }
+      }
+    },
+    "Syncing…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisation…"
+          }
+        }
+      }
+    },
+    "System": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Système"
+          }
+        }
+      }
+    },
+    "Tap to change": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez pour modifier"
+          }
+        }
+      }
+    },
+    "Tap to choose from your photos": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez pour choisir dans vos photos"
+          }
+        }
+      }
+    },
+    "Theme": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thème"
+          }
+        }
+      }
+    },
+    "This phone will stop syncing. Your local data stays. Your partner can keep using the same code.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce téléphone arrêtera de synchroniser. Vos données locales restent. Votre partenaire peut garder le même code."
+          }
+        }
+      }
+    },
+    "Together for %@ 💞": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ensemble depuis %@ 💞"
+          }
+        }
+      }
+    },
+    "Together since": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ensemble depuis"
+          }
+        }
+      }
+    },
+    "Together Since": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ensemble depuis"
+          }
+        }
+      }
+    },
+    "total": {},
+    "Unlink": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dissocier"
+          }
+        }
+      }
+    },
+    "Unlink Partner": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dissocier le partenaire"
+          }
+        }
+      }
+    },
+    "Unlink Partner?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dissocier le partenaire ?"
+          }
+        }
+      }
+    },
+    "Uses your iCloud account. Create a code on one phone, join with it on the other. Activity photos stay on each device.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilise votre compte iCloud. Créez un code sur un téléphone, rejoignez-le sur l’autre. Les photos restent sur chaque appareil."
+          }
+        }
+      }
+    },
+    "We met at a friend's birthday and talked until sunrise…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On s’est rencontrés à un anniversaire et on a parlé jusqu’au lever du soleil…"
+          }
+        }
+      }
+    },
+    "We'll celebrate every day since.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous célébrerons chaque jour depuis."
+          }
+        }
+      }
+    },
+    "Week": {},
+    "Weekly Goals (Minutes)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs hebdomadaires (minutes)"
+          }
+        }
+      }
+    },
+    "Weekly State": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "État de la semaine"
+          }
+        }
+      }
+    },
+    "What are your names?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quels sont vos prénoms ?"
+          }
+        }
+      }
     },
-    "Choose how many minutes per week you want to aim for in each area." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisissez combien de minutes par semaine viser dans chaque domaine."
+    "When did your story begin?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand votre histoire a-t-elle commencé ?"
           }
         }
       }
     },
-    "Choose Photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisir une photo"
+    "You can always add rituals later.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pourrez toujours ajouter des rituels plus tard."
           }
         }
       }
     },
-    "Continue" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continuer"
+    "Your moments together": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos moments à deux"
           }
         }
       }
     },
-    "Copied" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copié"
+    "Your Name": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre prénom"
           }
         }
       }
     },
-    "Copy" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copier"
+    "Your names": {
+      "extractionState": "stale",
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos prénoms"
           }
         }
       }
     },
-    "Copy Invite Code" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copier le code d’invitation"
+    "Your story starts today ✨": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre histoire commence aujourd’hui ✨"
           }
         }
       }
     },
-    "Couple photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo du couple"
+    "Going Out": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sorties"
           }
         }
       }
     },
-    "Couple Photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo du couple"
+    "Deep Talks": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discussions profondes"
           }
         }
       }
     },
-    "Create Invite Code" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Créer un code d’invitation"
+    "At Home": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À la maison"
           }
         }
       }
     },
-    "Dark" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sombre"
+    "New Adventures": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelles aventures"
           }
         }
       }
     },
-    "Dashboard" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tableau de bord"
+    "Adventures": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aventures"
           }
         }
       }
     },
-    "Data Management" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gestion des données"
+    "Date nights, walks, dining, events": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soirées, promenades, restaurants, sorties"
           }
         }
       }
     },
-    "Day" : {
-
+    "Heart-to-heart talks, check-ins": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discussions sincères, points réguliers"
+          }
+        }
+      }
     },
-    "Deletes all logged time, rituals and ideas, and restores default goals. This can't be undone." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprime tout le temps enregistré, les rituels et les idées, et restaure les objectifs par défaut. Irréversible."
+    "Cooking, chores, shared home tasks": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuisine, tâches, projets à deux à la maison"
           }
         }
       }
     },
-    "Deletes everything logged since the start of this week." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprime tout ce qui a été enregistré depuis le début de la semaine."
+    "Novel experiences, surprises": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelles expériences, surprises"
           }
         }
       }
     },
-    "Developer Tools" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Outils développeur"
+    "Daily": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quotidien"
           }
         }
       }
     },
-    "Double tap to add or change photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Touchez deux fois pour ajouter ou changer la photo"
+    "Weekly": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hebdomadaire"
           }
         }
       }
     },
-    "Enter the 6-character invite code from your partner." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saisissez le code d’invitation à 6 caractères de votre partenaire."
+    "Monthly": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mensuel"
           }
         }
       }
     },
-    "Enter the 6-character invite code." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saisissez le code d’invitation à 6 caractères."
+    "day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jour"
           }
         }
       }
     },
-    "Erase" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effacer"
+    "week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "semaine"
           }
         }
       }
     },
-    "Erase All Data" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effacer toutes les données"
+    "month": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mois"
           }
         }
       }
     },
-    "Erase All Data?" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effacer toutes les données ?"
+    "Start Time Together": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Démarrer le temps à deux"
           }
         }
       }
     },
-    "First look, first spark — however it started." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Premier regard, première étincelle — peu importe comment."
+    "together": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ensemble"
           }
         }
       }
     },
-    "Get Started" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Commencer"
+    "Stop": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrêter"
           }
         }
       }
     },
-    "Happy %lld-year anniversary! 🎉" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Joyeux %lldᵉ anniversaire ! 🎉"
+    "Haven't done in a while": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas fait depuis un moment"
           }
         }
       }
     },
-    "Happy 1-year anniversary! 🎉" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Joyeux 1ᵉʳ anniversaire ! 🎉"
+    "ALL WEEKLY GOALS COMPLETE!": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OBJECTIFS DE LA SEMAINE ATTEINTS !"
           }
         }
       }
     },
-    "hours" : {
-
+    "Your weekly goals achieved! A great reason to celebrate together! 🎉": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs de la semaine atteints ! Une belle raison de fêter ça ensemble ! 🎉"
+          }
+        }
+      }
     },
-    "Hours" : {
-
+    "1 day since your last date night out": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 jour depuis votre dernière sortie"
+          }
+        }
+      }
     },
-    "How did your paths cross?" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comment vos chemins se sont croisés ?"
+    "%lld days since your last date night out": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld jours depuis votre dernière sortie"
           }
         }
       }
     },
-    "How You Met" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comment vous vous êtes rencontrés"
+    "1 day since your last new adventure": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 jour depuis votre dernière aventure"
           }
         }
       }
     },
-    "How your story began" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comment votre histoire a commencé"
+    "%lld days since your last new adventure": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld jours depuis votre dernière aventure"
           }
         }
       }
     },
-    "iCloud is unavailable right now." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iCloud est indisponible pour le moment."
+    "You made time for Going Out or New Adventures today!": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez pris du temps pour Sorties ou Nouvelles aventures aujourd’hui !"
           }
         }
       }
     },
-    "Insights" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analyses"
+    "Log a date night out or a new adventure to start tracking.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notez une sortie ou une aventure pour commencer le suivi."
           }
         }
       }
     },
-    "Invite code %@ is on the clipboard." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le code %@ est dans le presse-papiers."
+    "Not yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore"
           }
         }
       }
     },
-    "Invite Code Ready" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Code d’invitation prêt"
+    "Today": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aujourd’hui"
           }
         }
       }
     },
-    "Joie Libre Moments" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Joie Libre Moments"
+    "1 day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 jour"
           }
         }
       }
     },
-    "Join" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rejoindre"
+    "%lld days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld jours"
           }
         }
       }
     },
-    "Join Partner" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rejoindre le partenaire"
+    "Which category did you spend time on?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur quelle catégorie avez-vous passé du temps ?"
           }
         }
       }
     },
-    "Join with Code" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rejoindre avec un code"
+    "Logs %@ together.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistre %@ ensemble."
           }
         }
       }
     },
-    "Light" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clair"
+    "Discard": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignorer"
           }
         }
       }
     },
-    "Linked · %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lié · %@"
+    "Keep Timing": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer le chrono"
           }
         }
       }
     },
-    "Linked · %@ · synced %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lié · %@ · sync %@ "
+    "Friday Date Night": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soirée du vendredi"
           }
         }
       }
     },
-    "Make time together" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prenez du temps à deux"
+    "Morning coffee together": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Café du matin à deux"
           }
         }
       }
     },
-    "Minutes" : {
-
+    "Sunday walk": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promenade du dimanche"
+          }
+        }
+      }
     },
-    "Next" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suivant"
+    "Monthly adventure": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aventure du mois"
           }
         }
       }
     },
-    "No couple found for that code." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun couple trouvé pour ce code."
+    "Ideas": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idées"
           }
         }
       }
     },
-    "Not linked yet" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pas encore lié"
+    "No rituals yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun rituel pour l’instant"
           }
         }
       }
     },
-    "OK" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
+    "Rituals are the little traditions you repeat. Check one off each time to grow its streak.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les rituels sont de petites traditions à répéter. Cochez-les pour faire grandir la série."
           }
         }
       }
     },
-    "Optional" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Facultatif"
+    "Rituals & Ideas": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rituels et idées"
           }
         }
       }
     },
-    "Optional — a sentence or two you'll love rereading later." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Facultatif — une phrase ou deux que vous aimerez relire plus tard."
+    "Add New Ritual": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un rituel"
           }
         }
       }
     },
-    "Optional — it shows on your home screen." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Facultatif — elle apparaît sur votre écran d’accueil."
+    "Active Streaks": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Séries en cours"
           }
         }
       }
     },
-    "Our Story" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notre histoire"
+    "Suggestions": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggestions"
           }
         }
       }
     },
-    "Partner Sync" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sync partenaire"
+    "Missing a whole period resets the streak.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manquer une période entière réinitialise la série."
           }
         }
       }
     },
-    "Partner's Name" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prénom du partenaire"
+    "Delete": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer"
           }
         }
       }
     },
-    "Pick 1–2 Initial Rituals" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisissez 1 ou 2 rituels de départ"
+    "🔥 %lld %@ streak": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔥 Série de %lld %@"
           }
         }
       }
     },
-    "Pick the day you started dating — we'll count every day since." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisissez le jour où vous avez commencé à sortir ensemble — on comptera chaque jour depuis."
+    "%@ · start a streak": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · démarrer une série"
           }
         }
       }
     },
-    "Pick your first rituals" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisissez vos premiers rituels"
+    "Friday Dinner Out": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dîner du vendredi"
           }
         }
       }
     },
-    "Preferences" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Préférences"
+    "Sunday Morning Walk": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promenade du dimanche matin"
           }
         }
       }
     },
-    "Recurring habits keep connection consistent week after week." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Des habitudes récurrentes entretiennent le lien semaine après semaine."
+    "Weekly Check-in": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Point hebdomadaire"
           }
         }
       }
     },
-    "Remove Photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprimer la photo"
+    "Phone-Free Evening": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soirée sans téléphone"
           }
         }
       }
     },
-    "Replay Onboarding" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rejouer l’onboarding"
+    "This week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette semaine"
           }
         }
       }
     },
-    "Reset" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialiser"
+    "Weekly average": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyenne hebdomadaire"
           }
         }
       }
     },
-    "Reset Current Week" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialiser la semaine"
+    "Best Day for Connection": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meilleur jour de connexion"
           }
         }
       }
     },
-    "Reset This Week?" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialiser cette semaine ?"
+    "Weekly Breakdown": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Répartition hebdomadaire"
           }
         }
       }
     },
-    "Rituals" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rituels"
+    "Hours per week, by category": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heures par semaine, par catégorie"
           }
         }
       }
     },
-    "Set weekly goals for quality time, track meaningful connection, and build recurring rituals together." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fixez des objectifs de temps de qualité, suivez votre connexion et créez des rituels ensemble."
+    "Category Balance": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Équilibre des catégories"
           }
         }
       }
     },
-    "Set Your Weekly Goals" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fixez vos objectifs hebdomadaires"
+    "This Month": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce mois-ci"
           }
         }
       }
     },
-    "Settings" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réglages"
+    "Last Month": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le mois dernier"
           }
         }
       }
     },
-    "Share a photo of you together." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Partagez une photo de vous deux."
+    "Share Recap": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager le récap"
           }
         }
       }
     },
-    "Share this code with your partner:\n\n%@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Partagez ce code avec votre partenaire :\n\n%@"
+    "No activity yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune activité pour l’instant"
           }
         }
       }
     },
-    "Shown on your Dashboard." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Affiché sur votre tableau de bord."
+    "Log some time together to see your trends.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notez du temps à deux pour voir vos tendances."
           }
         }
       }
     },
-    "Shown together on your home screen." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Affichés ensemble sur votre écran d’accueil."
+    "Monthly Recap": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récap mensuel"
           }
         }
       }
     },
-    "Sign in to iCloud in Settings to sync." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connectez-vous à iCloud dans Réglages pour synchroniser."
+    "A shareable summary of your month": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un résumé partageable de votre mois"
           }
         }
       }
     },
-    "Skip" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passer"
+    "Share of time over the last %lld weeks": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Part du temps sur les %lld dernières semaines"
           }
         }
       }
     },
-    "Start Tracking" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Commencer le suivi"
+    "Same as last week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pareil que la semaine dernière"
           }
         }
       }
     },
-    "Sync Now" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Synchroniser maintenant"
+    "+%@ vs last week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@ vs semaine dernière"
           }
         }
       }
     },
-    "Sync Unavailable" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sync indisponible"
+    "-%@ vs last week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-%@ vs semaine dernière"
           }
         }
       }
     },
-    "Synced data looks damaged. Try again." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les données synchronisées semblent endommagées. Réessayez."
+    "Last %lld weeks": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld dernières semaines"
           }
         }
       }
     },
-    "Syncing…" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Synchronisation…"
+    "Nothing logged yet this week. Try scheduling a %@ activity soon.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien de noté cette semaine. Essayez une activité « %@ » bientôt."
           }
         }
       }
     },
-    "System" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Système"
+    "Great job on %@ this week! Try scheduling a %@ activity soon.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bravo pour %@ cette semaine ! Essayez une activité « %@ » bientôt."
           }
         }
       }
     },
-    "Tap to change" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Touchez pour modifier"
+    "Great job on %@ this week! Every goal is on track.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bravo pour %@ cette semaine ! Tous les objectifs sont sur la bonne voie."
           }
         }
       }
     },
-    "Tap to choose from your photos" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Touchez pour choisir dans vos photos"
+    "Log some time together to see your balance.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notez du temps à deux pour voir votre équilibre."
           }
         }
       }
     },
-    "Theme" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Thème"
+    "Leading: %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En tête : %@"
           }
         }
       }
     },
-    "This phone will stop syncing. Your local data stays. Your partner can keep using the same code." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ce téléphone arrêtera de synchroniser. Vos données locales restent. Votre partenaire peut garder le même code."
+    "Lagging: %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À rattraper : %@"
           }
         }
       }
     },
-    "Together for %@ 💞" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ensemble depuis %@ 💞"
+    "%@ logged over the last %lld weeks": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ notés sur les %lld dernières semaines"
           }
         }
       }
     },
-    "Together since" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ensemble depuis"
+    "Not enough data yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore assez de données"
           }
         }
       }
     },
-    "Together Since" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ensemble depuis"
+    "Your peak connection day will appear here": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre meilleur jour de connexion apparaîtra ici"
           }
         }
       }
     },
-    "total" : {
-
+    "Add": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter"
+          }
+        }
+      }
     },
-    "Unlink" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dissocier"
+    "New Ritual": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau rituel"
           }
         }
       }
     },
-    "Unlink Partner" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dissocier le partenaire"
+    "e.g. Friday Date Night": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ex. Soirée du vendredi"
           }
         }
       }
     },
-    "Unlink Partner?" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dissocier le partenaire ?"
+    "ICON": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ICÔNE"
           }
         }
       }
     },
-    "Uses your iCloud account. Create a code on one phone, join with it on the other. Activity photos stay on each device." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utilise votre compte iCloud. Créez un code sur un téléphone, rejoignez-le sur l’autre. Les photos restent sur chaque appareil."
+    "REPEATS": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FRÉQUENCE"
           }
         }
       }
     },
-    "We met at a friend's birthday and talked until sunrise…" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "On s’est rencontrés à un anniversaire et on a parlé jusqu’au lever du soleil…"
+    "Nothing logged yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien de noté pour l’instant"
           }
         }
       }
     },
-    "We'll celebrate every day since." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nous célébrerons chaque jour depuis."
+    "Use +15m on the dashboard or the form above.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisez +15 min sur le tableau de bord ou le formulaire ci-dessus."
           }
         }
       }
     },
-    "Week" : {
-
+    "Save Log": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer"
+          }
+        }
+      }
     },
-    "Weekly Goals (Minutes)" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Objectifs hebdomadaires (minutes)"
+    "Duration": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durée"
           }
         }
       }
     },
-    "Weekly State" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "État de la semaine"
+    "OUR MONTH": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NOTRE MOIS"
           }
         }
       }
     },
-    "What are your names?" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quels sont vos prénoms ?"
+    "hours together · %lld moments": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "heures ensemble · %lld moments"
           }
         }
       }
     },
-    "When did your story begin?" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quand votre histoire a-t-elle commencé ?"
+    "Top category": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catégorie phare"
           }
         }
       }
     },
-    "You can always add rituals later." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous pourrez toujours ajouter des rituels plus tard."
+    "Rituals done": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rituels faits"
           }
         }
       }
     },
-    "Your moments together" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vos moments à deux"
+    "New date night or outing idea": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idée de sortie ou de soirée"
           }
         }
       }
     },
-    "Your Name" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre prénom"
+    "New adventure or surprise idea": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idée d’aventure ou de surprise"
           }
         }
       }
     },
-    "Your names" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vos prénoms"
+    "Home or nesting project to share": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projet maison à partager"
           }
         }
       }
     },
-    "Your story starts today ✨" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre histoire commence aujourd’hui ✨"
+    "No %@ ideas yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore d’idées « %@ »"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

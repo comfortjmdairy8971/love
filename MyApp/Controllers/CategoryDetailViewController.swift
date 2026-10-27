@@ -35,8 +35,8 @@ final class CategoryDetailViewController: UIViewController {
     private lazy var saveCell = ViewContainerCell(hosting: saveButton)
     private lazy var emptyHistoryCell = ViewContainerCell(hosting: EmptyStateView(
         symbol: category.icon,
-        title: "Nothing logged yet",
-        message: "Use +15m on the dashboard or the form above."
+        title: String(localized: "Nothing logged yet"),
+        message: String(localized: "Use +15m on the dashboard or the form above.")
     ))
 
     private var formRows: [FormRow] {
@@ -46,7 +46,7 @@ final class CategoryDetailViewController: UIViewController {
     init(category: ActivityCategory) {
         self.category = category
         headerRing = CircularProgressView(color: category.color, lineWidth: 10)
-        saveButton = UIButton(configuration: .capsule(title: "Save Log", color: category.color))
+        saveButton = UIButton(configuration: .capsule(title: String(localized: "Save Log"), color: category.color))
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -135,7 +135,7 @@ final class CategoryDetailViewController: UIViewController {
     }
 
     private func makeDurationRow() -> UIView {
-        let label = UILabel.make("Duration", font: .preferred(.body))
+        let label = UILabel.make(String(localized: "Duration"), font: .preferred(.body))
         return UIStackView.make(.horizontal, spacing: 12, alignment: .center, [label, .spacer(), durationValueLabel, stepper])
     }
 
@@ -307,7 +307,7 @@ extension CategoryDetailViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard indexPath.section == Section.history.rawValue, !logs.isEmpty else { return nil }
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+        let delete = UIContextualAction(style: .destructive, title: String(localized: "Delete")) { [weak self] _, _, completion in
             self?.deleteLog(at: indexPath)
             completion(true)
         }

@@ -11,16 +11,16 @@ final class LivePillView: UIView {
     private let capsule = TapView()
 
     private let playIcon = UIImageView.symbol("play.fill", style: .headline, color: .brandAccent)
-    private let startLabel = UILabel.make("Start Time Together", font: .preferred(.headline), color: .brandAccent)
+    private let startLabel = UILabel.make(String(localized: "Start Time Together"), font: .preferred(.headline), color: .brandAccent)
     private lazy var idleStack = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [playIcon, startLabel])
 
     private let dotView = UIView()
     private let timeLabel = UILabel.make(
         font: UIFontMetrics(forTextStyle: .title3).scaledFont(for: .monospacedDigitSystemFont(ofSize: 20, weight: .bold))
     )
-    private let stateLabel = UILabel.make("together", font: .preferred(.caption1), color: .secondaryLabel)
+    private let stateLabel = UILabel.make(String(localized: "together"), font: .preferred(.caption1), color: .secondaryLabel)
     let stopButton = UIButton(configuration: .capsule(
-        title: "Stop",
+        title: String(localized: "Stop"),
         symbol: "stop.fill",
         color: .brandAccent,
         font: .preferred(.subheadline, weight: .bold),

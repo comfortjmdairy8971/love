@@ -11,10 +11,10 @@ enum ActivityCategory: String, CaseIterable, Identifiable, Codable {
 
     var title: String {
         switch self {
-        case .goingOut: "Going Out"
-        case .deepTalks: "Deep Talks"
-        case .atHome: "At Home"
-        case .newAdventures: "New Adventures"
+        case .goingOut: String(localized: "Going Out")
+        case .deepTalks: String(localized: "Deep Talks")
+        case .atHome: String(localized: "At Home")
+        case .newAdventures: String(localized: "New Adventures")
         }
     }
 
@@ -38,10 +38,10 @@ enum ActivityCategory: String, CaseIterable, Identifiable, Codable {
 
     var info: String {
         switch self {
-        case .goingOut: "Date nights, walks, dining, events"
-        case .deepTalks: "Heart-to-heart talks, check-ins"
-        case .atHome: "Cooking, chores, shared home tasks"
-        case .newAdventures: "Novel experiences, surprises"
+        case .goingOut: String(localized: "Date nights, walks, dining, events")
+        case .deepTalks: String(localized: "Heart-to-heart talks, check-ins")
+        case .atHome: String(localized: "Cooking, chores, shared home tasks")
+        case .newAdventures: String(localized: "Novel experiences, surprises")
         }
     }
 
