@@ -1,8 +1,8 @@
 workflows:
-  ios-build:
-    name: iOS Build
+  ios-release:
+    name: Build & Publish JoieLibreMoments
     max_build_duration: 120
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m2
     integrations:
       app_store_connect: Key
     environment:
@@ -14,14 +14,21 @@ workflows:
         XCODE_SCHEME: "JoieLibreMoments"
       xcode: latest
     scripts:
-      - name: Set up code signing
+      - name: Set up provisioning profiles settings on Xcode project
         script: |
           xcode-project use-profiles
-      - name: Build IPA
+      - name: Set build number
+        script: |
+          cd $CM_BUILD_DIR
+          agvtool new-version -all $BUILD_NUMBER
+      - name: Build ipa for distribution
         script: |
           xcode-project build-ipa \
-            --project "$XCODE_PROJECT" \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
