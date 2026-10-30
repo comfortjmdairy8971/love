@@ -9,13 +9,12 @@ final class OnboardingViewController: UIPageViewController {
 
     private lazy var welcomePage = OnboardingWelcomeViewController()
     private lazy var namesPage = OnboardingNamesViewController()
-    private lazy var photoPage = OnboardingPhotoViewController()
     private lazy var anniversaryPage = OnboardingAnniversaryViewController()
     private lazy var howWeMetPage = OnboardingHowWeMetViewController()
     private lazy var goalsPage = OnboardingGoalsViewController()
     private lazy var ritualsPage = OnboardingRitualsViewController()
     private lazy var pages: [OnboardingPageViewController] = [
-        welcomePage, namesPage, photoPage, anniversaryPage, howWeMetPage, goalsPage, ritualsPage,
+        welcomePage, namesPage, anniversaryPage, howWeMetPage, goalsPage, ritualsPage,
     ]
 
     init() {
@@ -36,11 +35,6 @@ final class OnboardingViewController: UIPageViewController {
             self?.namesPage.save()
             self?.advance(past: self?.namesPage)
         }
-        photoPage.onAction = { [weak self] in
-            self?.photoPage.save()
-            self?.advance(past: self?.photoPage)
-        }
-        photoPage.onSecondaryAction = { [weak self] in self?.advance(past: self?.photoPage) }
         anniversaryPage.onAction = { [weak self] in
             self?.anniversaryPage.save()
             self?.advance(past: self?.anniversaryPage)
@@ -49,7 +43,6 @@ final class OnboardingViewController: UIPageViewController {
             self?.howWeMetPage.save()
             self?.advance(past: self?.howWeMetPage)
         }
-        howWeMetPage.onSecondaryAction = { [weak self] in self?.advance(past: self?.howWeMetPage) }
         goalsPage.onAction = { [weak self] in self?.advance(past: self?.goalsPage) }
         ritualsPage.onAction = { [weak self] in self?.finish() }
         setViewControllers([welcomePage], direction: .forward, animated: false)
@@ -94,9 +87,9 @@ final class OnboardingViewController: UIPageViewController {
             store.setGoal(goalsPage.minutes(for: category), for: category, from: self)
         }
 
-        let existingTitles = Set(store.rituals.map { $0.title.lowercased() })
-        for preset in ritualsPage.selectedPresets where !existingTitles.contains(preset.title.lowercased()) {
-            store.context.insert(Ritual(title: preset.title, icon: preset.icon, frequency: preset.frequency))
+        let existingKeys = Set(store.rituals.map(\.presetKey).filter { !$0.isEmpty })
+        for preset in ritualsPage.selectedPresets where !existingKeys.contains(preset.slug) {
+            store.context.insert(Ritual(preset: preset))
         }
         store.commit(from: self)
 

@@ -3,12 +3,7 @@ import UIKit
 // MARK: - Couple Header
 /// Dashboard card with the couple's photo, names, and how long they've been together.
 final class CoupleHeaderView: UIView {
-    var onPhotoTap: (() -> Void)? {
-        get { avatar.onTap }
-        set { avatar.onTap = newValue }
-    }
-
-    private let avatar = CoupleAvatarView(side: 52, showsCameraBadge: true)
+    private let avatar = CoupleAvatarView(side: 52)
     private let namesLabel = UILabel.make(font: .preferred(.title2, weight: .bold, design: .rounded), lines: 0)
     private let durationLabel = UILabel.make(font: .preferred(.subheadline, weight: .semibold), color: .brandAccent, lines: 0)
     private let detailLabel = UILabel.make(font: .preferred(.caption1), color: .secondaryLabel, lines: 0)

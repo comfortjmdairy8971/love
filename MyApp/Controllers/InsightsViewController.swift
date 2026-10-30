@@ -332,9 +332,11 @@ final class InsightsViewController: UIViewController {
             dot.layer.cornerRadius = 5
             let percent = Int((Double(share.minutes) / Double(total) * 100).rounded())
             let percentLabel = UILabel.make("\(percent)%", font: .preferred(.subheadline, weight: .semibold), alignment: .right)
+            let categoryLabel = UILabel.make(share.category.title, font: .preferred(.subheadline))
+            categoryLabel.applyFlexibleTitle()
             let row = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [
                 dot,
-                UILabel.make(share.category.title, font: .preferred(.subheadline)),
+                categoryLabel,
                 .spacer(),
                 UILabel.make(formatDuration(minutes: share.minutes), font: .preferred(.subheadline), color: .secondaryLabel),
                 percentLabel,

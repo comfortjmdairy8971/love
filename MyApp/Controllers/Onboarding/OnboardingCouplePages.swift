@@ -78,115 +78,7 @@ extension OnboardingNamesViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - Step 3: Couple Photo
-final class OnboardingPhotoViewController: OnboardingPageViewController {
-    private let avatarButton = UIButton(type: .system)
-    private let imageView = UIImageView()
-    private let placeholderTile = IconTileView(
-        symbol: "heart.fill",
-        color: .brandAccent,
-        side: 120,
-        cornerRadius: 60,
-        pointSize: 44
-    )
-    private var pendingImage: UIImage?
-
-    init() {
-        super.init(
-            buttonTitle: String(localized: "Next"),
-            pageIdentifier: AccessibilityID.Onboarding.photoPage,
-            buttonIdentifier: AccessibilityID.Onboarding.photoNextButton,
-            secondaryButtonTitle: String(localized: "Skip"),
-            secondaryButtonIdentifier: AccessibilityID.Onboarding.photoSkipButton
-        )
-    }
-
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let stack = makeScrollingStack(
-            title: String(localized: "Add a photo of you two"),
-            subtitle: String(localized: "Share a photo of you together."),
-            verticallyCentered: true
-        )
-
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 60
-        imageView.layer.cornerCurve = .continuous
-        imageView.isHidden = true
-
-        avatarButton.translatesAutoresizingMaskIntoConstraints = false
-        avatarButton.accessibilityIdentifier = AccessibilityID.Onboarding.photoButton
-        avatarButton.accessibilityLabel = String(localized: "Couple photo")
-        avatarButton.addAction(UIAction { [weak self] _ in self?.pickPhoto() }, for: .touchUpInside)
-        avatarButton.addSubview(placeholderTile)
-        avatarButton.addSubview(imageView)
-
-        let camera = UIImageView(image: UIImage(systemName: "camera.circle.fill"))
-        camera.translatesAutoresizingMaskIntoConstraints = false
-        camera.tintColor = .brandAccent
-        camera.backgroundColor = .systemBackground
-        camera.layer.cornerRadius = 16
-        camera.clipsToBounds = true
-        camera.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 28)
-        avatarButton.addSubview(camera)
-
-        let hint = UILabel.make(
-            String(localized: "Tap to choose from your photos"),
-            font: .preferred(.subheadline),
-            color: .secondaryLabel,
-            alignment: .center
-        )
-
-        NSLayoutConstraint.activate([
-            avatarButton.widthAnchor.constraint(equalToConstant: 120),
-            avatarButton.heightAnchor.constraint(equalToConstant: 120),
-            placeholderTile.centerXAnchor.constraint(equalTo: avatarButton.centerXAnchor),
-            placeholderTile.centerYAnchor.constraint(equalTo: avatarButton.centerYAnchor),
-            imageView.topAnchor.constraint(equalTo: avatarButton.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: avatarButton.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: avatarButton.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: avatarButton.bottomAnchor),
-            camera.widthAnchor.constraint(equalToConstant: 32),
-            camera.heightAnchor.constraint(equalToConstant: 32),
-            camera.trailingAnchor.constraint(equalTo: avatarButton.trailingAnchor, constant: 4),
-            camera.bottomAnchor.constraint(equalTo: avatarButton.bottomAnchor, constant: 4),
-        ])
-
-        let group = UIStackView.make(.vertical, spacing: 16, alignment: .center, [avatarButton, hint])
-        stack.addArrangedSubview(group)
-
-        if let existing = CouplePhotoStore.load() {
-            show(existing)
-            pendingImage = existing
-        }
-    }
-
-    private func pickPhoto() {
-        CouplePhotoPicker.presentLibrary(from: self) { [weak self] image in
-            self?.show(image)
-            self?.pendingImage = image
-            Haptics.light()
-        }
-    }
-
-    private func show(_ image: UIImage) {
-        imageView.image = image
-        imageView.isHidden = false
-        placeholderTile.isHidden = true
-    }
-
-    func save() {
-        if let pendingImage {
-            _ = CouplePhotoStore.save(pendingImage)
-        }
-    }
-}
-
-// MARK: - Step 4: Anniversary
+// MARK: - Anniversary
 final class OnboardingAnniversaryViewController: OnboardingPageViewController {
     private let datePicker = UIDatePicker()
     private let summaryLabel = UILabel.make(
@@ -278,9 +170,7 @@ final class OnboardingHowWeMetViewController: OnboardingPageViewController {
         super.init(
             buttonTitle: String(localized: "Next"),
             pageIdentifier: AccessibilityID.Onboarding.howWeMetPage,
-            buttonIdentifier: AccessibilityID.Onboarding.howWeMetNextButton,
-            secondaryButtonTitle: String(localized: "Skip"),
-            secondaryButtonIdentifier: AccessibilityID.Onboarding.howWeMetSkipButton
+            buttonIdentifier: AccessibilityID.Onboarding.howWeMetNextButton
         )
     }
 

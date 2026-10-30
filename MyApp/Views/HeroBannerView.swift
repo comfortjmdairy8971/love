@@ -137,8 +137,7 @@ final class DaysSincePillView: UIView {
 
         let icon = IconTileView(symbol: category.icon, color: category.color, side: 30, cornerRadius: 8, pointSize: 14)
         let caption = UILabel.make(category.title, font: .preferred(.caption1), color: .secondaryLabel)
-        caption.adjustsFontSizeToFitWidth = true
-        caption.minimumScaleFactor = 0.8
+        caption.applyFlexibleTitle()
         let texts = UIStackView.make(.vertical, spacing: 2, [caption, valueLabel])
         let content = UIStackView.make(.horizontal, spacing: 10, alignment: .center, [icon, texts])
         addSubview(content)

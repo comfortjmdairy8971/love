@@ -12,7 +12,11 @@ final class ConcentricRingsView: UIView {
     private let centerView = CircularHitView()
     private let heartView = UIImageView.symbol("heart.fill", style: .largeTitle, color: .brandAccent)
     private let percentLabel = UILabel.make(font: .rounded(ofSize: 22, weight: .bold), alignment: .center)
-    private let titleLabel = UILabel.make(font: .systemFont(ofSize: 11, weight: .semibold), color: .secondaryLabel, alignment: .center)
+    private let titleLabel: UILabel = {
+        let label = UILabel.make(font: .systemFont(ofSize: 11, weight: .semibold), color: .secondaryLabel, lines: 2, alignment: .center)
+        label.applyFlexibleTitle()
+        return label
+    }()
     private lazy var centerStack = UIStackView.make(.vertical, spacing: 2, alignment: .center, [percentLabel, titleLabel])
 
     private var isCelebrating = false

@@ -6,6 +6,8 @@ final class LivePillView: UIView {
 
     var onStart: (() -> Void)?
     var onStop: (() -> Void)?
+    var onResume: (() -> Void)?
+    var onDiscard: (() -> Void)?
     private(set) var state: State = .idle
 
     private let capsule = TapView()
@@ -26,9 +28,22 @@ final class LivePillView: UIView {
         font: .preferred(.subheadline, weight: .bold),
         verticalPadding: 8
     ))
+    let resumeButton = UIButton(configuration: .capsule(
+        title: String(localized: "Resume"),
+        color: .brandAccent,
+        font: .preferred(.subheadline, weight: .bold),
+        verticalPadding: 8
+    ))
+    let discardButton = UIButton(configuration: .capsule(
+        title: String(localized: "Discard"),
+        color: .systemRed,
+        font: .preferred(.subheadline, weight: .bold),
+        verticalPadding: 8
+    ))
+    private lazy var pausedActions = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [resumeButton, discardButton])
     private lazy var activeStack = UIStackView.make(
         .horizontal, spacing: 10, alignment: .center,
-        [dotView, timeLabel, stateLabel, .spacer(), stopButton]
+        [dotView, timeLabel, stateLabel, .spacer(), stopButton, pausedActions]
     )
 
     private var idleConstraints: [NSLayoutConstraint] = []
@@ -70,6 +85,12 @@ final class LivePillView: UIView {
         stopButton.setContentHuggingPriority(.required, for: .horizontal)
         stopButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         stopButton.addAction(UIAction { [weak self] _ in self?.onStop?() }, for: .touchUpInside)
+        resumeButton.addAction(UIAction { [weak self] _ in self?.onResume?() }, for: .touchUpInside)
+        discardButton.addAction(UIAction { [weak self] _ in self?.onDiscard?() }, for: .touchUpInside)
+        for button in [resumeButton, discardButton] {
+            button.setContentHuggingPriority(.required, for: .horizontal)
+            button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        }
 
         capsule.addSubview(idleStack)
         capsule.addSubview(activeStack)
@@ -131,7 +152,10 @@ final class LivePillView: UIView {
 
     private func applyState(animated: Bool) {
         let isIdle = state == .idle
-        stateLabel.text = state == .paused ? "paused" : "together"
+        let isPaused = state == .paused
+        stateLabel.text = isPaused ? String(localized: "paused") : String(localized: "together")
+        stopButton.isHidden = isPaused
+        pausedActions.isHidden = !isPaused
         NSLayoutConstraint.deactivate(isIdle ? activeConstraints : idleConstraints)
         NSLayoutConstraint.activate(isIdle ? idleConstraints : activeConstraints)
 

@@ -1,11 +1,9 @@
 import UIKit
-import PhotosUI
-import SwiftUI
 
 // MARK: - Category Detail
 final class CategoryDetailViewController: UIViewController {
     private enum Section: Int, CaseIterable { case header, form, history }
-    private enum FormRow { case duration, note, photo, photoPreview, save }
+    private enum FormRow { case duration, note, save }
 
     private let category: ActivityCategory
     private let store = DataStore.shared
@@ -19,19 +17,14 @@ final class CategoryDetailViewController: UIViewController {
 
     // Form
     private var durationMinutes = 30
-    private var imageData: Data?
     private let durationValueLabel = UILabel.make(font: .preferred(.body), color: .secondaryLabel)
     private let stepper = UIStepper()
     private let noteField = UITextField()
-    private let photoButton = UIButton(configuration: .plain())
-    private let photoPreview = UIImageView()
     private let saveButton: UIButton
 
     private lazy var headerCell = ViewContainerCell(hosting: makeHeaderView())
     private lazy var durationCell = ViewContainerCell(hosting: makeDurationRow())
     private lazy var noteCell = ViewContainerCell(hosting: noteField)
-    private lazy var photoCell = ViewContainerCell(hosting: photoButton, insets: NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
-    private lazy var photoPreviewCell = ViewContainerCell(hosting: makePhotoPreview())
     private lazy var saveCell = ViewContainerCell(hosting: saveButton)
     private lazy var emptyHistoryCell = ViewContainerCell(hosting: EmptyStateView(
         symbol: category.icon,
@@ -39,9 +32,7 @@ final class CategoryDetailViewController: UIViewController {
         message: String(localized: "Use +15m on the dashboard or the form above.")
     ))
 
-    private var formRows: [FormRow] {
-        imageData == nil ? [.duration, .note, .photo, .save] : [.duration, .note, .photo, .photoPreview, .save]
-    }
+    private var formRows: [FormRow] { [.duration, .note, .save] }
 
     init(category: ActivityCategory) {
         self.category = category
@@ -95,20 +86,13 @@ final class CategoryDetailViewController: UIViewController {
         updateDurationLabel()
 
         noteField.translatesAutoresizingMaskIntoConstraints = false
-        noteField.placeholder = "Add a short note..."
+        noteField.placeholder = String(localized: "Add a short note...")
         noteField.font = .preferredFont(forTextStyle: .body)
         noteField.adjustsFontForContentSizeCategory = true
         noteField.clearButtonMode = .whileEditing
         noteField.returnKeyType = .done
         noteField.delegate = self
         noteField.heightAnchor.constraint(greaterThanOrEqualToConstant: 32).isActive = true
-
-        photoButton.configuration?.image = UIImage(systemName: "photo.on.rectangle.angled")
-        photoButton.configuration?.imagePadding = 10
-        photoButton.configuration?.baseForegroundColor = category.color
-        photoButton.contentHorizontalAlignment = .leading
-        photoButton.addAction(UIAction { [weak self] _ in self?.presentPhotoPicker() }, for: .touchUpInside)
-        updatePhotoButtonTitle()
 
         saveButton.addAction(UIAction { [weak self] _ in self?.save() }, for: .touchUpInside)
     }
@@ -120,6 +104,7 @@ final class CategoryDetailViewController: UIViewController {
         headerRing.addSubview(icon)
 
         let titleLabel = UILabel.make(category.title, font: .preferred(.title3, weight: .bold))
+        titleLabel.applyFlexibleTitle()
         let infoLabel = UILabel.make(category.info, font: .preferred(.caption1), color: .secondaryLabel, lines: 0)
         let texts = UIStackView.make(.vertical, spacing: 4, [titleLabel, progressLabel, infoLabel])
         let content = UIStackView.make(.horizontal, spacing: 16, alignment: .center, [headerRing, texts])
@@ -139,43 +124,11 @@ final class CategoryDetailViewController: UIViewController {
         return UIStackView.make(.horizontal, spacing: 12, alignment: .center, [label, .spacer(), durationValueLabel, stepper])
     }
 
-    private func makePhotoPreview() -> UIView {
-        photoPreview.translatesAutoresizingMaskIntoConstraints = false
-        photoPreview.contentMode = .scaleAspectFill
-        photoPreview.clipsToBounds = true
-        photoPreview.layer.cornerRadius = 12
-        photoPreview.layer.cornerCurve = .continuous
-        photoPreview.isUserInteractionEnabled = true
-        photoPreview.isAccessibilityElement = true
-        photoPreview.accessibilityLabel = "Attached photo"
-
-        var removeConfig = UIButton.Configuration.plain()
-        removeConfig.image = UIImage(systemName: "xmark.circle.fill")
-        removeConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 24)
-            .applying(UIImage.SymbolConfiguration(paletteColors: [.white, UIColor.black.withAlphaComponent(0.5)]))
-        let removeButton = UIButton(configuration: removeConfig)
-        removeButton.translatesAutoresizingMaskIntoConstraints = false
-        removeButton.accessibilityLabel = "Remove Photo"
-        removeButton.addAction(UIAction { [weak self] _ in self?.setImageData(nil) }, for: .touchUpInside)
-        photoPreview.addSubview(removeButton)
-
-        NSLayoutConstraint.activate([
-            photoPreview.heightAnchor.constraint(equalToConstant: 180),
-            removeButton.topAnchor.constraint(equalTo: photoPreview.topAnchor, constant: 4),
-            removeButton.trailingAnchor.constraint(equalTo: photoPreview.trailingAnchor, constant: -4),
-        ])
-        return photoPreview
-    }
-
     // MARK: Updates
     private func updateDurationLabel() {
         durationValueLabel.text = formatDuration(minutes: durationMinutes)
-        stepper.accessibilityLabel = "Duration"
+        stepper.accessibilityLabel = String(localized: "Duration")
         stepper.accessibilityValue = formatDuration(minutes: durationMinutes)
-    }
-
-    private func updatePhotoButtonTitle() {
-        photoButton.configuration?.title = imageData == nil ? "Attach Photo" : "Change Photo"
     }
 
     private func updateHeader(animated: Bool) {
@@ -183,7 +136,8 @@ final class CategoryDetailViewController: UIViewController {
         let target = store.targetMinutes(for: category)
         let progress = min(Double(weekMinutes) / Double(max(target, 1)), 1)
         headerRing.setProgress(progress, animated: animated)
-        progressLabel.text = "\(Int(progress * 100))% · \(weekMinutes) / \(target) mins this week"
+        let percent = Int(progress * 100)
+        progressLabel.text = String(localized: "\(percent)% · \(weekMinutes) / \(target) mins this week")
         headerCell.contentView.subviews.first?.accessibilityLabel = "\(category.title). \(progressLabel.text ?? "")"
     }
 
@@ -194,25 +148,11 @@ final class CategoryDetailViewController: UIViewController {
         tableView.reloadSections(IndexSet(integer: Section.history.rawValue), with: .automatic)
     }
 
-    private func setImageData(_ data: Data?) {
-        let hadPreview = imageData != nil
-        imageData = data
-        photoPreview.image = data.flatMap(UIImage.init(data:))
-        updatePhotoButtonTitle()
-
-        let previewPath = IndexPath(row: 3, section: Section.form.rawValue)
-        switch (hadPreview, data != nil) {
-        case (false, true): tableView.insertRows(at: [previewPath], with: .fade)
-        case (true, false): tableView.deleteRows(at: [previewPath], with: .fade)
-        default: break
-        }
-    }
-
     // MARK: Actions
     private func save() {
         let note = (noteField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         store.insert(
-            ActivityLog(category: category, durationMinutes: durationMinutes, note: note, imageData: imageData),
+            ActivityLog(category: category, durationMinutes: durationMinutes, note: note),
             from: self
         )
         Haptics.success()
@@ -221,7 +161,6 @@ final class CategoryDetailViewController: UIViewController {
         logs = store.logs(for: category)
         noteField.text = ""
         noteField.resignFirstResponder()
-        setImageData(nil)
         updateHeader(animated: true)
 
         let firstHistoryRow = IndexPath(row: 0, section: Section.history.rawValue)
@@ -243,23 +182,6 @@ final class CategoryDetailViewController: UIViewController {
         updateHeader(animated: true)
     }
 
-    private func presentPhotoPicker() {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-        configuration.selectionLimit = 1
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        present(picker, animated: true)
-    }
-
-    /// Re-encodes picked photos as JPEG capped at 2048px so the store stays small.
-    nonisolated private static func compressedJPEG(from image: UIImage, maxDimension: CGFloat = 2048) -> Data? {
-        let longest = max(image.size.width, image.size.height)
-        guard longest > maxDimension else { return image.jpegData(compressionQuality: 0.85) }
-        let scale = maxDimension / longest
-        let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
-        return (image.preparingThumbnail(of: size) ?? image).jpegData(compressionQuality: 0.85)
-    }
 }
 
 // MARK: - Table Data Source & Delegate
@@ -277,8 +199,8 @@ extension CategoryDetailViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch Section(rawValue: section) {
-        case .form: "Log an Activity"
-        case .history: "History"
+        case .form: String(localized: "Log an Activity")
+        case .history: String(localized: "History")
         default: nil
         }
     }
@@ -291,8 +213,6 @@ extension CategoryDetailViewController: UITableViewDataSource, UITableViewDelega
             switch formRows[indexPath.row] {
             case .duration: return durationCell
             case .note: return noteCell
-            case .photo: return photoCell
-            case .photoPreview: return photoPreviewCell
             case .save: return saveCell
             }
         case .history, nil:
@@ -321,21 +241,6 @@ extension CategoryDetailViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-}
-
-// MARK: - Photo Picker
-extension CategoryDetailViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.dismiss(animated: true)
-        guard let provider = results.first?.itemProvider, provider.canLoadObject(ofClass: UIImage.self) else { return }
-        provider.loadObject(ofClass: UIImage.self) { [weak self] object, _ in
-            guard let image = object as? UIImage else { return }
-            let data = Self.compressedJPEG(from: image)
-            Task { @MainActor [weak self] in
-                self?.setImageData(data)
-            }
-        }
     }
 }
 

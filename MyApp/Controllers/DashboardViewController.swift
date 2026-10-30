@@ -4,6 +4,7 @@ import SwiftUI
 // MARK: - Dashboard
 final class DashboardViewController: UIViewController {
     private let store = DataStore.shared
+    private let timerManager: TimerManager
 
     private let scrollView = UIScrollView()
     private let contentStack = UIStackView.make(.vertical, spacing: 24)
@@ -21,11 +22,16 @@ final class DashboardViewController: UIViewController {
     private var selectedCategory: ActivityCategory?
     private var progress: [ActivityCategory: Double] = [:]
 
-    // Live timer
-    private var timer: Timer?
-    private var timerStartDate: Date?
-    private var elapsedSeconds = 0
-    private var isTimerActive = false
+    init(timerManager: TimerManager) {
+        self.timerManager = timerManager
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    convenience init() {
+        self.init(timerManager: .shared)
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +44,16 @@ final class DashboardViewController: UIViewController {
         setUpCallbacks()
         NotificationCenter.default.addObserver(self, selector: #selector(dataDidChange), name: .dataStoreDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(coupleProfileDidChange), name: .coupleProfileDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(timerDidChange), name: .timerManagerDidChange, object: nil)
         reloadData(animated: false)
+        refreshLivePill(animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Picks up a new week, and animates rings changed from another screen.
+        timerManager.syncFromStartDate()
+        refreshLivePill(animated: false)
         reloadData(animated: true)
     }
 
@@ -96,11 +106,18 @@ final class DashboardViewController: UIViewController {
     private func setUpCallbacks() {
         rings.onRingTapped = { [weak self] category in self?.toggleSelection(category) }
         rings.onCenterTapped = { [weak self] in self?.clearSelection() }
-        livePill.onStart = { [weak self] in self?.startTimer() }
+        livePill.onStart = { [weak self] in
+            Haptics.tap()
+            self?.timerManager.startTimer()
+        }
         livePill.onStop = { [weak self] in self?.stopTimer() }
-        coupleHeader.onPhotoTap = { [weak self] in
-            guard let self else { return }
-            CouplePhotoPicker.present(from: self)
+        livePill.onResume = { [weak self] in
+            Haptics.tap()
+            self?.timerManager.resumeTimer()
+        }
+        livePill.onDiscard = { [weak self] in
+            Haptics.light()
+            self?.timerManager.resetTimer()
         }
 
         for (category, card) in cards {
@@ -188,50 +205,32 @@ final class DashboardViewController: UIViewController {
     }
 
     // MARK: Live Timer
-    private func startTimer() {
-        Haptics.tap()
-        timerStartDate = Date()
-        elapsedSeconds = 0
-        isTimerActive = true
-        scheduleTimer()
-        livePill.configure(state: .running, elapsedSeconds: 0, animated: true)
+    @objc private func timerDidChange() {
+        refreshLivePill(animated: livePill.state == .idle && timerManager.isTiming)
     }
 
-    private func scheduleTimer() {
-        timer?.invalidate()
-        let timer = Timer(timeInterval: 1, repeats: true) { [weak self] timer in
-            MainActor.assumeIsolated {
-                guard let self else { return timer.invalidate() }
-                self.tick()
-            }
+    private func refreshLivePill(animated: Bool) {
+        let seconds = Int(timerManager.elapsedSeconds)
+        let state: LivePillView.State
+        if timerManager.isTiming {
+            state = .running
+        } else if timerManager.elapsedSeconds > 0 {
+            state = .paused
+        } else {
+            state = .idle
         }
-        timer.tolerance = 0.1
-        // `.common` keeps the stopwatch ticking while the user scrolls.
-        RunLoop.main.add(timer, forMode: .common)
-        self.timer = timer
-    }
-
-    private func tick() {
-        guard isTimerActive, let timerStartDate else { return }
-        // Derived from the start date so time spent in the background still counts.
-        elapsedSeconds = Int(Date().timeIntervalSince(timerStartDate))
-        livePill.setElapsed(elapsedSeconds)
+        livePill.configure(state: state, elapsedSeconds: seconds, animated: animated)
     }
 
     private func stopTimer() {
         Haptics.tap()
-        if isTimerActive, let timerStartDate {
-            elapsedSeconds = Int(Date().timeIntervalSince(timerStartDate))
-        }
-        isTimerActive = false
-        timer?.invalidate()
-        timer = nil
-        livePill.configure(state: .paused, elapsedSeconds: elapsedSeconds, animated: true)
+        timerManager.pauseTimer()
         presentCategoryPicker()
     }
 
     private func presentCategoryPicker() {
-        let minutes = max(1, elapsedSeconds / 60)
+        let elapsed = timerManager.elapsedSeconds
+        let minutes = max(1, Int(elapsed) / 60)
         let sheet = UIAlertController(
             title: String(localized: "Which category did you spend time on?"),
             message: String(localized: "Logs \(formatDuration(minutes: minutes)) together."),
@@ -239,40 +238,26 @@ final class DashboardViewController: UIViewController {
         )
         for category in ActivityCategory.allCases {
             sheet.addAction(UIAlertAction(title: category.title, style: .default) { [weak self] _ in
-                self?.saveTimer(to: category)
+                self?.saveTimer(to: category, elapsedSeconds: elapsed)
             })
         }
+        sheet.addAction(UIAlertAction(title: String(localized: "Resume"), style: .default) { [weak self] _ in
+            self?.timerManager.resumeTimer()
+        })
         sheet.addAction(UIAlertAction(title: String(localized: "Discard"), style: .destructive) { [weak self] _ in
-            self?.resetTimer()
+            self?.timerManager.resetTimer()
         })
-        sheet.addAction(UIAlertAction(title: String(localized: "Keep Timing"), style: .cancel) { [weak self] _ in
-            self?.resumeTimer()
-        })
+        // Dismissing without a choice leaves the session paused.
+        sheet.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
         sheet.popoverPresentationController?.sourceView = livePill.stopButton
         present(sheet, animated: true)
     }
 
-    private func saveTimer(to category: ActivityCategory) {
-        let minutes = max(1, elapsedSeconds / 60)
+    private func saveTimer(to category: ActivityCategory, elapsedSeconds: TimeInterval) {
+        let minutes = max(1, Int(elapsedSeconds) / 60)
         store.insert(ActivityLog(category: category, durationMinutes: minutes, date: Date(), note: ""))
         Haptics.success()
-        resetTimer()
-    }
-
-    private func resumeTimer() {
-        timerStartDate = Date().addingTimeInterval(-Double(elapsedSeconds))
-        isTimerActive = true
-        scheduleTimer()
-        livePill.configure(state: .running, elapsedSeconds: elapsedSeconds, animated: true)
-    }
-
-    private func resetTimer() {
-        timer?.invalidate()
-        timer = nil
-        isTimerActive = false
-        timerStartDate = nil
-        elapsedSeconds = 0
-        livePill.configure(state: .idle, elapsedSeconds: 0, animated: true)
+        timerManager.resetTimer()
     }
 }
 

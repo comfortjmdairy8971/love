@@ -35,6 +35,7 @@ enum DataBootstrap {
                 ritual.completionDates = [last]
             }
         }
+        deduplicateRituals(in: existingRituals, context: context)
 
         let existingGoals = (try? context.fetch(FetchDescriptor<WeeklyGoal>())) ?? []
         for goal in existingGoals {
@@ -81,6 +82,66 @@ enum DataBootstrap {
         try? context.save()
         syncGoalStorage(context: context, defaults: defaults)
     }
+
+    /// Collapses EN/FR copies of the same preset and refreshes titles to the current locale.
+    static func deduplicateRituals(in rituals: [Ritual], context: ModelContext) {
+        for ritual in rituals {
+            if ritual.presetKey.isEmpty, let preset = RitualPreset.matching(title: ritual.title) {
+                ritual.presetKey = preset.slug
+            } else if let preset = RitualPreset.matching(slug: ritual.presetKey) {
+                ritual.presetKey = preset.slug
+            }
+            if let preset = RitualPreset.matching(slug: ritual.presetKey) {
+                ritual.title = preset.title
+                if ritual.icon.isEmpty { ritual.icon = preset.icon }
+            }
+        }
+
+        func keepBest(_ group: [Ritual]) -> Ritual {
+            group.max { lhs, rhs in
+                if lhs.completionDates.count != rhs.completionDates.count {
+                    return lhs.completionDates.count < rhs.completionDates.count
+                }
+                return lhs.createdAt > rhs.createdAt
+            } ?? group[0]
+        }
+
+        func merge(into keeper: Ritual, extras: [Ritual]) {
+            for extra in extras {
+                keeper.completionDates = Array(Set(keeper.completionDates + extra.completionDates)).sorted()
+                keeper.streakCount = max(keeper.streakCount, extra.streakCount)
+                if let last = extra.lastCompletedDate, last > (keeper.lastCompletedDate ?? .distantPast) {
+                    keeper.lastCompletedDate = last
+                }
+                context.delete(extra)
+            }
+        }
+
+        let keyed = Dictionary(grouping: rituals.filter { !$0.presetKey.isEmpty }, by: \.presetKey)
+        for (_, group) in keyed where group.count > 1 {
+            let keeper = keepBest(group)
+            merge(into: keeper, extras: group.filter { $0 !== keeper })
+        }
+
+        let untitled = rituals.filter { $0.presetKey.isEmpty && !$0.title.trimmed.isEmpty }
+        let byTitle = Dictionary(grouping: untitled) { $0.title.trimmed.lowercased() }
+        for (_, group) in byTitle where group.count > 1 {
+            let keeper = keepBest(group)
+            merge(into: keeper, extras: group.filter { $0 !== keeper })
+        }
+    }
+
+    #if SHOW_DEVELOPER_TOOLS
+    /// Deletes catalog rituals so Debug can start from a clean preset list.
+    static func resetSeededRituals(context: ModelContext) {
+        let rituals = (try? context.fetch(FetchDescriptor<Ritual>())) ?? []
+        for ritual in rituals {
+            let isPreset = !ritual.presetKey.isEmpty || RitualPreset.matching(title: ritual.title) != nil
+            if isPreset { context.delete(ritual) }
+        }
+        try? context.save()
+    }
+    #endif
 
     /// Mirrors `WeeklyGoal` targets into `UserDefaults` keys (`goalGoingOut`, etc.).
     static func syncGoalStorage(context: ModelContext, defaults: UserDefaults = .standard) {

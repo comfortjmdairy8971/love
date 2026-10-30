@@ -260,11 +260,16 @@ private final class GoalSetupCardView: UIView {
         }, for: .valueChanged)
 
         let icon = IconTileView(symbol: category.icon, color: category.color, side: 36, cornerRadius: 9)
-        let texts = UIStackView.make(.vertical, spacing: 2, [
-            UILabel.make(category.title, font: .preferred(.headline)),
+        let titleLabel = UILabel.make(category.title, font: .preferred(.headline))
+        titleLabel.applySingleLineTitle()
+        let texts = UIStackView.make(.vertical, spacing: 2, alignment: .leading, [
+            titleLabel,
             valueLabel,
         ])
-        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, texts, .spacer(), stepper])
+        texts.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        texts.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, texts, stepper])
         addSubview(row)
         row.pinEdges(to: self, insets: .all(16))
         updateLabel(minutes)
@@ -273,28 +278,15 @@ private final class GoalSetupCardView: UIView {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     private func updateLabel(_ minutes: Int) {
-        valueLabel.text = formatDuration(minutes: minutes) + " / week"
+        let duration = formatDuration(minutes: minutes)
+        valueLabel.text = String(localized: "\(duration) / week")
         stepper.accessibilityValue = formatDuration(minutes: minutes)
     }
 }
 
 // MARK: - Step 6: Rituals
-struct RitualPreset {
-    let slug: String
-    let title: String
-    let icon: String
-    let frequency: RitualFrequency
-
-    static let all: [RitualPreset] = [
-        .init(slug: "fridayDinner", title: String(localized: "Friday Dinner Out"), icon: "fork.knife", frequency: .weekly),
-        .init(slug: "sundayWalk", title: String(localized: "Sunday Morning Walk"), icon: "figure.walk", frequency: .weekly),
-        .init(slug: "weeklyCheckIn", title: String(localized: "Weekly Check-in"), icon: "bubble.left.and.bubble.right.fill", frequency: .weekly),
-        .init(slug: "phoneFreeEvening", title: String(localized: "Phone-Free Evening"), icon: "iphone.slash", frequency: .weekly),
-    ]
-}
-
 final class OnboardingRitualsViewController: OnboardingPageViewController {
-    private let maxSelections = RitualPreset.all.count
+    private let maxSelections = RitualPreset.onboarding.count
     private var chips: [RitualPresetChipView] = []
     private let captionLabel = UILabel.make(font: .preferred(.caption1), color: .secondaryLabel)
 
@@ -318,7 +310,7 @@ final class OnboardingRitualsViewController: OnboardingPageViewController {
             title: String(localized: "Pick your first rituals"),
             subtitle: String(localized: "Recurring habits keep connection consistent week after week.")
         )
-        chips = RitualPreset.all.map { preset in
+        chips = RitualPreset.onboarding.map { preset in
             let chip = RitualPresetChipView(preset: preset)
             chip.addAction(UIAction { [weak self, weak chip] _ in
                 guard let chip else { return }

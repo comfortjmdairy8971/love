@@ -14,11 +14,6 @@ enum AccessibilityID {
         static let partnerNameField = "onboarding.names.partnerName"
         static let namesContinueButton = "onboarding.names.continue"
 
-        static let photoPage = "onboarding.photo"
-        static let photoButton = "onboarding.photo.button"
-        static let photoNextButton = "onboarding.photo.next"
-        static let photoSkipButton = "onboarding.photo.skip"
-
         static let anniversaryPage = "onboarding.anniversary"
         static let anniversaryPicker = "onboarding.anniversary.datePicker"
         static let anniversaryContinueButton = "onboarding.anniversary.continue"
@@ -26,7 +21,6 @@ enum AccessibilityID {
         static let howWeMetPage = "onboarding.howWeMet"
         static let howWeMetText = "onboarding.howWeMet.text"
         static let howWeMetNextButton = "onboarding.howWeMet.next"
-        static let howWeMetSkipButton = "onboarding.howWeMet.skip"
 
         static let goalsPage = "onboarding.goals"
         static let continueButton = "onboarding.goals.continue"
@@ -48,7 +42,6 @@ enum AccessibilityID {
     enum Dashboard {
         static let screen = "dashboard.screen"
         static let coupleHeader = "dashboard.coupleHeader"
-        static let couplePhoto = "dashboard.couplePhoto"
         static let livePillStart = "dashboard.livePill.start"
         static let livePillStop = "dashboard.livePill.stop"
         static let rings = "dashboard.rings"
@@ -78,7 +71,6 @@ enum AccessibilityID {
         static let partnerNameField = "settings.couple.partnerName"
         static let startDatePicker = "settings.couple.startDate"
         static let howWeMetField = "settings.couple.howWeMet"
-        static let couplePhoto = "settings.couple.photo"
         static func goalStepper(_ category: ActivityCategory) -> String { "settings.goal.stepper.\(category.rawValue)" }
         static let themeControl = "settings.themeControl"
         static let createInvite = "settings.sync.createInvite"
@@ -86,7 +78,10 @@ enum AccessibilityID {
         static let syncNow = "settings.sync.syncNow"
         static let copyCode = "settings.sync.copyCode"
         static let unlink = "settings.sync.unlink"
+        #if SHOW_DEVELOPER_TOOLS
         static let replayOnboarding = "settings.replayOnboarding"
+        static let resetSampleRituals = "settings.resetSampleRituals"
+        #endif
         static let resetWeek = "settings.resetWeek"
         static let eraseAll = "settings.eraseAll"
     }

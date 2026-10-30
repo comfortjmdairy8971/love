@@ -6,7 +6,7 @@ import SwiftUI
 final class SettingsViewController: UIViewController {
     private enum Section: CaseIterable {
         case couple, sync, goals, preferences
-        #if DEBUG
+        #if SHOW_DEVELOPER_TOOLS
         case developer
         #endif
         case data
@@ -17,7 +17,7 @@ final class SettingsViewController: UIViewController {
             case .sync: String(localized: "Partner Sync")
             case .goals: String(localized: "Weekly Goals (Minutes)")
             case .preferences: String(localized: "Preferences")
-            #if DEBUG
+            #if SHOW_DEVELOPER_TOOLS
             case .developer: String(localized: "Developer Tools")
             #endif
             case .data: String(localized: "Data Management")
@@ -46,9 +46,8 @@ final class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private var goalRows: [ActivityCategory: GoalStepperRow] = [:]
 
-    private lazy var photoRow = CouplePhotoRow { [weak self] in
-        guard let self else { return }
-        CouplePhotoPicker.present(from: self)
+    private lazy var howWeMetRow = HowWeMetRow { [weak self] in
+        self?.presentStoryEditor()
     }
 
     private lazy var coupleCells: [ViewContainerCell] = {
@@ -68,14 +67,7 @@ final class SettingsViewController: UIViewController {
             text: profile.partnerName,
             identifier: AccessibilityID.Settings.partnerNameField
         ) { text in CoupleProfile.update { $0.partnerName = text } }
-        let howWeMet = CoupleTextRow(
-            symbol: "sparkles",
-            title: String(localized: "How your story began"),
-            placeholder: String(localized: "A few words"),
-            text: profile.howWeMet,
-            identifier: AccessibilityID.Settings.howWeMetField
-        ) { text in CoupleProfile.update { $0.howWeMet = String(text.prefix(CoupleProfile.howWeMetCharacterLimit)) } }
-        return [photoRow, yourName, partnerName, makeStartDateRow(profile.startDate), howWeMet].map {
+        return [yourName, partnerName, makeStartDateRow(profile.startDate), howWeMetRow].map {
             ViewContainerCell(hosting: $0, insets: rowInsets)
         }
     }()
@@ -92,7 +84,6 @@ final class SettingsViewController: UIViewController {
 
     private lazy var themeCell: ViewContainerCell = {
         let icon = UIImageView.symbol("paintbrush.fill", color: .brandAccent)
-        let label = UILabel.make(String(localized: "Theme"), font: .preferred(.body))
         let control = UISegmentedControl(items: AppTheme.allCases.map(\.title))
         control.selectedSegmentIndex = AppTheme.current.rawValue
         control.addAction(UIAction { _ in
@@ -101,7 +92,9 @@ final class SettingsViewController: UIViewController {
         }, for: .valueChanged)
         control.accessibilityLabel = String(localized: "Theme")
         control.accessibilityIdentifier = AccessibilityID.Settings.themeControl
-        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, label, .spacer(), control])
+        control.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        icon.setContentHuggingPriority(.required, for: .horizontal)
+        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, control])
         return ViewContainerCell(hosting: row, insets: NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
     }()
 
@@ -123,12 +116,7 @@ final class SettingsViewController: UIViewController {
         if PartnerSyncService.isFeatureEnabled {
             NotificationCenter.default.addObserver(self, selector: #selector(syncDidChange), name: .partnerSyncDidChange, object: nil)
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(coupleDidChange), name: .coupleProfileDidChange, object: nil)
         refreshGoals()
-    }
-
-    @objc private func coupleDidChange() {
-        photoRow.reload()
     }
 
     @objc private func dataDidChange(_ notification: Notification) {
@@ -169,11 +157,17 @@ final class SettingsViewController: UIViewController {
     }
 
     // MARK: Actions
-    #if DEBUG
+    #if SHOW_DEVELOPER_TOOLS
     private func replayOnboarding() {
         Haptics.light()
         AppRouter.hasCompletedOnboarding = false
         AppRouter.transition(to: OnboardingViewController(), in: view.window)
+    }
+
+    private func resetSampleRituals() {
+        DataBootstrap.resetSeededRituals(context: store.context)
+        store.commit(from: self)
+        Haptics.success()
     }
     #endif
 
@@ -225,6 +219,15 @@ final class SettingsViewController: UIViewController {
         CouplePhotoStore.remove()
         Haptics.success()
     }
+
+    private func presentStoryEditor() {
+        let editor = StoryNoteEditorViewController { [weak self] in
+            self?.howWeMetRow.reload()
+        }
+        let navigation = UINavigationController(rootViewController: editor)
+        navigation.modalPresentationStyle = .pageSheet
+        present(navigation, animated: true)
+    }
 }
 
 // MARK: - Table Data Source & Delegate
@@ -256,8 +259,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case .sync: SyncRow.rows(isLinked: PartnerSyncService.shared.isLinked).count
         case .goals: goalCells.count
         case .preferences: 1
-        #if DEBUG
-        case .developer: 1
+        #if SHOW_DEVELOPER_TOOLS
+        case .developer: 2
         #endif
         case .data: ActionRow.allCases.count
         case nil: 0
@@ -274,14 +277,23 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             return goalCells[indexPath.row]
         case .preferences:
             return themeCell
-        #if DEBUG
+        #if SHOW_DEVELOPER_TOOLS
         case .developer:
+            if indexPath.row == 0 {
+                return actionCell(
+                    at: indexPath,
+                    title: String(localized: "Replay Onboarding"),
+                    symbol: "play.circle.fill",
+                    color: .brandAccent,
+                    identifier: AccessibilityID.Settings.replayOnboarding
+                )
+            }
             return actionCell(
                 at: indexPath,
-                title: String(localized: "Replay Onboarding"),
-                symbol: "play.circle.fill",
+                title: String(localized: "Reset Sample Rituals"),
+                symbol: "arrow.triangle.2.circlepath",
                 color: .brandAccent,
-                identifier: AccessibilityID.Settings.replayOnboarding
+                identifier: AccessibilityID.Settings.resetSampleRituals
             )
         #endif
         case .data:
@@ -387,7 +399,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case .sync:
             let rows = SyncRow.rows(isLinked: PartnerSyncService.shared.isLinked)
             return rows.indices.contains(indexPath.row) && rows[indexPath.row] != .status
-        #if DEBUG
+        #if SHOW_DEVELOPER_TOOLS
         case .developer:
             return true
         #endif
@@ -403,9 +415,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch section(at: indexPath.section) {
         case .sync:
             handleSyncTap(at: indexPath.row)
-        #if DEBUG
+        #if SHOW_DEVELOPER_TOOLS
         case .developer:
-            replayOnboarding()
+            indexPath.row == 0 ? replayOnboarding() : resetSampleRituals()
         #endif
         case .data:
             ActionRow(rawValue: indexPath.row) == .resetWeek ? confirmResetWeek() : confirmEraseAll()
@@ -529,41 +541,136 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - Couple Photo Row
-final class CouplePhotoRow: UIView {
-    private let avatar = CoupleAvatarView(side: 44, showsCameraBadge: false)
-    private let titleLabel = UILabel.make(String(localized: "Couple Photo"), font: .preferred(.body))
-    private let detailLabel = UILabel.make(font: .preferred(.subheadline), color: .secondaryLabel)
+// MARK: - How We Met Row
+final class HowWeMetRow: UIView {
+    private let onTap: () -> Void
+    private let titleLabel = UILabel.make(String(localized: "How we met"), font: .preferred(.body))
+    private let previewLabel = UILabel.make(font: .preferred(.subheadline), color: .secondaryLabel)
 
     init(onTap: @escaping () -> Void) {
+        self.onTap = onTap
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        avatar.onTap = onTap
-        accessibilityIdentifier = AccessibilityID.Settings.couplePhoto
 
+        titleLabel.applySingleLineTitle(minimumScale: 0.85)
+        titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        previewLabel.applySingleLineTitle(minimumScale: 0.85)
+        previewLabel.textAlignment = .right
+        previewLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let icon = UIImageView.symbol("sparkles", color: .brandAccent)
         let chevron = UIImageView.symbol("chevron.right", color: .tertiaryLabel)
-        let texts = UIStackView.make(.vertical, spacing: 2, [titleLabel, detailLabel])
-        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [avatar, texts, .spacer(), chevron])
+        icon.setContentHuggingPriority(.required, for: .horizontal)
+        chevron.setContentHuggingPriority(.required, for: .horizontal)
+        let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, titleLabel, previewLabel, chevron])
         addSubview(row)
         row.pinEdges(to: self)
-        NSLayoutConstraint.activate([heightAnchor.constraint(greaterThanOrEqualToConstant: 44)])
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 26),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 32),
+        ])
 
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tap)
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+        accessibilityIdentifier = AccessibilityID.Settings.howWeMetField
         reload()
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     func reload() {
-        avatar.reload()
-        detailLabel.text = CouplePhotoStore.hasPhoto
-            ? String(localized: "Tap to change")
-            : String(localized: "Add a photo")
+        let note = CoupleProfile.current.howWeMet.trimmed
+        previewLabel.text = note.isEmpty ? String(localized: "A few words") : note
+        accessibilityLabel = String(localized: "How we met")
+        accessibilityValue = note.isEmpty ? String(localized: "A few words") : note
+        accessibilityHint = String(localized: "Opens the story note")
     }
 
     @objc private func handleTap() {
-        avatar.onTap?()
+        Haptics.light()
+        onTap()
+    }
+}
+
+// MARK: - Story Note Editor
+final class StoryNoteEditorViewController: UIViewController, UITextViewDelegate {
+    private let onSave: () -> Void
+    private let textView = UITextView()
+    private let placeholderLabel = UILabel.make(
+        String(localized: "We met at a friend's birthday and talked until sunrise…"),
+        font: .preferred(.body),
+        color: .tertiaryLabel,
+        lines: 0
+    )
+    private let counterLabel = UILabel.make(font: .preferred(.caption1), color: .secondaryLabel, alignment: .right)
+
+    init(onSave: @escaping () -> Void) {
+        self.onSave = onSave
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = String(localized: "How we met")
+        view.backgroundColor = .systemGroupedBackground
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: String(localized: "Done"),
+            primaryAction: UIAction { [weak self] _ in self?.saveAndDismiss() }
+        )
+
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.font = .preferred(.body)
+        textView.adjustsFontForContentSizeCategory = true
+        textView.backgroundColor = .secondarySystemGroupedBackground
+        textView.layer.cornerRadius = 14
+        textView.layer.cornerCurve = .continuous
+        textView.textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 14, right: 12)
+        textView.text = CoupleProfile.current.howWeMet
+        textView.delegate = self
+        textView.accessibilityLabel = String(localized: "How we met")
+        textView.accessibilityIdentifier = AccessibilityID.Settings.howWeMetField
+
+        textView.addSubview(placeholderLabel)
+        let stack = UIStackView.make(.vertical, spacing: 8, [textView, counterLabel])
+        view.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            textView.heightAnchor.constraint(greaterThanOrEqualToConstant: 180),
+            placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: 14),
+            placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: 17),
+            placeholderLabel.widthAnchor.constraint(equalTo: textView.widthAnchor, constant: -34),
+        ])
+        updateTextState()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        textView.becomeFirstResponder()
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let current = textView.text as NSString
+        return current.replacingCharacters(in: range, with: text).count <= CoupleProfile.howWeMetCharacterLimit
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        updateTextState()
+    }
+
+    private func updateTextState() {
+        placeholderLabel.isHidden = !textView.text.isEmpty
+        counterLabel.text = "\(textView.text.count)/\(CoupleProfile.howWeMetCharacterLimit)"
+    }
+
+    private func saveAndDismiss() {
+        CoupleProfile.update { $0.howWeMet = String(textView.text.prefix(CoupleProfile.howWeMetCharacterLimit)) }
+        onSave()
+        dismiss(animated: true)
     }
 }
 
@@ -645,6 +752,7 @@ final class GoalStepperRow: UIView {
 
         let icon = UIImageView.symbol(category.icon, color: category.color)
         let title = UILabel.make(category.title, font: .preferred(.body))
+        title.applyFlexibleTitle()
         let row = UIStackView.make(.horizontal, spacing: 12, alignment: .center, [icon, title, .spacer(), valueLabel, stepper])
         addSubview(row)
         row.pinEdges(to: self)

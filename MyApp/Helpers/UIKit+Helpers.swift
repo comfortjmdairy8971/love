@@ -45,6 +45,28 @@ extension UILabel {
         label.adjustsFontForContentSizeCategory = true
         return label
     }
+
+    /// Fits on one line by shrinking instead of wrapping a leftover letter onto the next line.
+    func applySingleLineTitle(minimumScale: CGFloat = 0.75) {
+        numberOfLines = 1
+        lineBreakMode = .byTruncatingTail
+        adjustsFontSizeToFitWidth = true
+        minimumScaleFactor = minimumScale
+        allowsDefaultTighteningForTruncation = true
+        baselineAdjustment = .alignCenters
+        setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        setContentHuggingPriority(.defaultLow, for: .horizontal)
+    }
+
+    /// Wraps onto two lines and scales down slightly so localized category names don't truncate.
+    func applyFlexibleTitle(maxLines: Int = 2, minimumScale: CGFloat = 0.85) {
+        numberOfLines = maxLines
+        lineBreakMode = .byTruncatingTail
+        adjustsFontSizeToFitWidth = true
+        minimumScaleFactor = minimumScale
+        allowsDefaultTighteningForTruncation = true
+        setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    }
 }
 
 extension UIStackView {

@@ -6,20 +6,7 @@ final class RitualsViewController: UIViewController {
     private enum Mode: Int { case rituals, ideas }
     private enum Section { case active, suggestions }
 
-    private struct Suggestion {
-        let title: String
-        let icon: String
-        let frequency: RitualFrequency
-
-        static var all: [Suggestion] {
-            [
-                .init(title: String(localized: "Friday Date Night"), icon: "moon.stars.fill", frequency: .weekly),
-                .init(title: String(localized: "Morning coffee together"), icon: "cup.and.saucer.fill", frequency: .daily),
-                .init(title: String(localized: "Sunday walk"), icon: "figure.walk", frequency: .weekly),
-                .init(title: String(localized: "Monthly adventure"), icon: "map.fill", frequency: .monthly),
-            ]
-        }
-    }
+    private typealias Suggestion = RitualPreset
 
     private let store = DataStore.shared
     private var rituals: [Ritual] = []
@@ -74,7 +61,7 @@ final class RitualsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(RitualCell.self, forCellReuseIdentifier: RitualCell.reuseID)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SuggestionCell")
+        tableView.register(SuggestionCell.self, forCellReuseIdentifier: SuggestionCell.reuseID)
         view.addSubview(tableView)
 
         addChild(ideasViewController)
@@ -117,8 +104,11 @@ final class RitualsViewController: UIViewController {
 
     private func reloadData() {
         rituals = store.rituals
-        let existing = Set(rituals.map { $0.title.lowercased() })
-        suggestions = Suggestion.all.filter { !existing.contains($0.title.lowercased()) }
+        let existingKeys = Set(rituals.map(\.presetKey).filter { !$0.isEmpty })
+        let existingTitles = Set(rituals.map { $0.title.lowercased() })
+        suggestions = RitualPreset.suggestions.filter { preset in
+            !existingKeys.contains(preset.slug) && !existingTitles.contains(preset.title.lowercased())
+        }
         tableView.reloadData()
     }
 
@@ -142,7 +132,7 @@ final class RitualsViewController: UIViewController {
     }
 
     private func addSuggestion(_ suggestion: Suggestion) {
-        store.insert(Ritual(title: suggestion.title, icon: suggestion.icon, frequency: suggestion.frequency), from: self)
+        store.insert(Ritual(preset: suggestion), from: self)
         Haptics.light()
         reloadAnimated()
     }
@@ -202,17 +192,8 @@ extension RitualsViewController: UITableViewDataSource, UITableViewDelegate {
 
         case .suggestions:
             let suggestion = suggestions[indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestionCell", for: indexPath)
-            var content = UIListContentConfiguration.valueCell()
-            content.text = suggestion.title
-            content.secondaryText = suggestion.frequency.title
-            content.image = UIImage(systemName: suggestion.icon)
-            content.imageProperties.tintColor = .brandAccent
-            cell.contentConfiguration = content
-            let plus = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
-            plus.tintColor = .brandAccent
-            cell.accessoryView = plus
-            cell.accessibilityHint = "Adds this ritual"
+            let cell = tableView.dequeueReusableCell(withIdentifier: SuggestionCell.reuseID, for: indexPath) as! SuggestionCell
+            cell.configure(title: suggestion.title, icon: suggestion.icon, frequency: suggestion.frequency.title)
             return cell
         }
     }

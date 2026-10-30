@@ -43,6 +43,8 @@ final class Ritual {
     ]
 
     var id: UUID = UUID()
+    /// Stable catalog slug (`phone_free_evening`). Empty for user-created rituals.
+    var presetKey: String = ""
     var title: String
     var icon: String = Ritual.defaultIcon
     /// Raw `RitualFrequency` value (e.g. "weekly").
@@ -52,8 +54,9 @@ final class Ritual {
     var completionDates: [Date] = []
     var createdAt: Date
 
-    init(title: String, icon: String = Ritual.defaultIcon, frequency: RitualFrequency) {
+    init(title: String, icon: String = Ritual.defaultIcon, frequency: RitualFrequency, presetKey: String = "") {
         self.id = UUID()
+        self.presetKey = presetKey
         self.title = title
         self.icon = icon
         self.frequency = frequency.rawValue
@@ -61,6 +64,10 @@ final class Ritual {
         self.lastCompletedDate = nil
         self.completionDates = []
         self.createdAt = .now
+    }
+
+    convenience init(preset: RitualPreset) {
+        self.init(title: preset.title, icon: preset.icon, frequency: preset.frequency, presetKey: preset.slug)
     }
 
     var ritualFrequency: RitualFrequency { RitualFrequency(rawValue: frequency) ?? .weekly }

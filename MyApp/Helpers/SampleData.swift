@@ -29,13 +29,13 @@ enum SampleData {
             )
         }
 
-        let dateNight = Ritual(title: "Friday Date Night", icon: "moon.stars.fill", frequency: .weekly)
+        let dateNight = Ritual(preset: .suggestions.first { $0.slug == "friday_date_night" }!)
         dateNight.streakCount = 3
         dateNight.completionDates = [21, 14, 7].compactMap { calendar.date(byAdding: .day, value: -$0, to: .now) }
         dateNight.lastCompletedDate = dateNight.completionDates.last
         context.insert(dateNight)
 
-        let coffee = Ritual(title: "Morning coffee together", icon: "cup.and.saucer.fill", frequency: .daily)
+        let coffee = Ritual(preset: .suggestions.first { $0.slug == "morning_coffee" }!)
         coffee.streakCount = 5
         coffee.completionDates = (0..<5).reversed().compactMap { calendar.date(byAdding: .day, value: -$0, to: .now) }
         coffee.lastCompletedDate = coffee.completionDates.last

@@ -16,6 +16,7 @@ final class CategoryCardView: UIControl {
     init(category: ActivityCategory) {
         self.category = category
         titleLabel = UILabel.make(category.title, font: .preferred(.subheadline, weight: .semibold), color: .secondaryLabel)
+        titleLabel.applySingleLineTitle()
         quickAddButton = UIButton(configuration: .capsule(
             title: "+15m",
             color: category.color,
@@ -44,11 +45,11 @@ final class CategoryCardView: UIControl {
 
         let icon = UIImageView.symbol(category.icon, style: .title3, color: category.color)
         let chevron = UIImageView.symbol("chevron.right", style: .caption1, weight: .semibold, color: .tertiaryLabel)
-        titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.minimumScaleFactor = 0.8
-        let header = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [icon, titleLabel, .spacer(), chevron])
+        icon.setContentHuggingPriority(.required, for: .horizontal)
+        chevron.setContentHuggingPriority(.required, for: .horizontal)
+        let header = UIStackView.make(.horizontal, spacing: 8, alignment: .center, [icon, titleLabel, chevron])
 
-        let doneLabel = UILabel.make("done", font: .preferred(.caption1), color: .secondaryLabel)
+        let doneLabel = UILabel.make(String(localized: "done"), font: .preferred(.caption1), color: .secondaryLabel)
         let percentRow = UIStackView.make(.horizontal, spacing: 4, alignment: .firstBaseline, [percentLabel, doneLabel, .spacer()])
 
         let infoLabel = UILabel.make(category.info, font: .preferred(.caption2), color: .secondaryLabel)
@@ -101,9 +102,10 @@ final class CategoryCardView: UIControl {
     func configure(currentMinutes: Int, targetMinutes: Int) {
         let percentage = min(Int(Double(currentMinutes) / Double(max(targetMinutes, 1)) * 100), 100)
         percentLabel.text = "\(percentage)%"
-        minutesLabel.text = "\(currentMinutes) / \(targetMinutes) mins"
-        accessibilityLabel =
-            "\(category.title), \(percentage) percent done, \(currentMinutes) of \(targetMinutes) minutes. \(category.info)"
+        minutesLabel.text = String(localized: "\(currentMinutes) / \(targetMinutes) mins")
+        accessibilityLabel = String(
+            localized: "\(category.title), \(percentage) percent done, \(currentMinutes) of \(targetMinutes) minutes. \(category.info)"
+        )
     }
 
     func setSelected(_ isSelected: Bool, animated: Bool) {
